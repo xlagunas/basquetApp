@@ -17,12 +17,6 @@
          android:layout_gravity="left" instead. -->
     <!-- The drawer is given a fixed width in dp and extends the full height of
          the container. -->
-    <fragment android:id="@+id/navigation_drawer_end"
-        android:layout_width="@dimen/navigation_drawer_width"
-        android:layout_height="match_parent"
-        android:layout_gravity="end"
-        android:name="cat.xlagunas.drawerapp.NavigationDrawerFragment"
-        tools:layout="@layout/fragment_navigation_drawer" />
 
     <fragment android:id="@+id/navigation_drawer_start"
         android:layout_width="@dimen/navigation_drawer_width"

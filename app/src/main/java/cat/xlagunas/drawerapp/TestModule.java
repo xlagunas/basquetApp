@@ -7,7 +7,7 @@ import dagger.Module;
  */
 
 @Module(
-        injects = MainActivity.class, library = false, complete = false
+        injects = { MainActivity.class, MainActivity.PlaceholderFragment.class }, library = false, complete = false
 )
 public class TestModule {
 }

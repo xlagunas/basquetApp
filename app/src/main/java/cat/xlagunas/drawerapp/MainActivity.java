@@ -5,6 +5,8 @@ import android.app.Activity;
 import android.app.ActionBar;
 import android.app.Fragment;
 import android.app.FragmentManager;
+import android.content.Context;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -16,6 +18,8 @@ import android.support.v4.widget.DrawerLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.util.List;
+
 import javax.inject.Inject;
 
 import cat.xlagunas.drawerapp.api.ApiTest;
@@ -24,6 +28,12 @@ import cat.xlagunas.drawerapp.api.model.WeatherModel;
 import retrofit.Callback;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
+import rx.Observable;
+import rx.android.app.AppObservable;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.functions.Action1;
+import rx.functions.Func1;
+import rx.schedulers.Schedulers;
 
 
 public class MainActivity extends Activity implements NavigationDrawerFragment.NavigationDrawerCallbacks {
@@ -32,11 +42,8 @@ public class MainActivity extends Activity implements NavigationDrawerFragment.N
      * Fragment managing the behaviors, interactions and presentation of the navigation drawer.
      */
     private NavigationDrawerFragment mNavigationDrawerFragmentStart;
-    private NavigationDrawerFragment mNavigationDrawerFragmentEnd;
     private String TAG = this.getClass().getSimpleName();
 
-    @Inject
-    ApiTest apiTest;
 
     /**
      * Used to store the last screen title. For use in {@link #restoreActionBar()}.
@@ -55,8 +62,6 @@ public class MainActivity extends Activity implements NavigationDrawerFragment.N
         mNavigationDrawerFragmentStart = (NavigationDrawerFragment)
                 getFragmentManager().findFragmentById(R.id.navigation_drawer_start);
 
-        mNavigationDrawerFragmentEnd = (NavigationDrawerFragment)
-                getFragmentManager().findFragmentById(R.id.navigation_drawer_end);
         mTitle = getTitle();
 
         // Set up the drawer.
@@ -64,22 +69,6 @@ public class MainActivity extends Activity implements NavigationDrawerFragment.N
                 R.id.navigation_drawer_start,
                 (DrawerLayout) findViewById(R.id.drawer_layout));
 
-        mNavigationDrawerFragmentEnd.setUp(
-                R.id.navigation_drawer_end,
-                (DrawerLayout) findViewById(R.id.drawer_layout));
-
-        apiTest.testGoogleApiCall(new Callback<Results>() {
-            @Override
-            public void success(Results model, Response response) {
-                Toast.makeText(MainActivity.this, model.toString(), Toast.LENGTH_LONG).show();
-            }
-
-            @Override
-            public void failure(RetrofitError error) {
-                Toast.makeText(MainActivity.this, "Error" +error.getMessage(), Toast.LENGTH_LONG).show();
-                Log.e(TAG, "error query", error);
-            }
-        });
     }
 
     @Override
@@ -122,14 +111,8 @@ public class MainActivity extends Activity implements NavigationDrawerFragment.N
             getMenuInflater().inflate(R.menu.main, menu);
             restoreActionBar();
             return true;
-        }else if (!mNavigationDrawerFragmentEnd.isDrawerOpen()) {
-            // Only show items in the action bar relevant to this screen
-            // if the drawer is not showing. Otherwise, let the drawer
-            // decide what to show in the action bar.
-            getMenuInflater().inflate(R.menu.main, menu);
-            restoreActionBar();
-            return true;
         }
+
         return super.onCreateOptionsMenu(menu);
     }
 
@@ -152,12 +135,17 @@ public class MainActivity extends Activity implements NavigationDrawerFragment.N
      * A placeholder fragment containing a simple view.
      */
     public static class PlaceholderFragment extends Fragment {
+
+        @Inject ApiTest apiTest;
+        private final static String TAG = PlaceholderFragment.class.getSimpleName();
         /**
          * The fragment argument representing the section number for this
          * fragment.
          */
         private static final String ARG_SECTION_NUMBER = "section_number";
         private TextView mTextView;
+        private int mTotalPages;
+        private Context mContext;
 
         /**
          * Returns a new instance of this fragment for the given section
@@ -183,12 +171,55 @@ public class MainActivity extends Activity implements NavigationDrawerFragment.N
         }
 
         @Override
+        public void onActivityCreated(Bundle savedInstanceState) {
+            super.onActivityCreated(savedInstanceState);
+            CustomApplication app = (CustomApplication) getActivity().getApplication();
+            app.inject(this);
+            Log.d(TAG, "Call onActivityCreated");
+            initResultCalls();
+
+        }
+
+        @Override
         public void onAttach(Activity activity) {
             super.onAttach(activity);
+            Log.d(TAG, "onAttach");
             ((MainActivity) activity).onSectionAttached(
                     getArguments().getInt(ARG_SECTION_NUMBER));
 
         }
+
+        private void initResultCalls(){
+            AppObservable.bindFragment(this, apiTest.getMaximumRounds());
+
+            apiTest
+                    .getMaximumRounds()
+                    .flatMap(new Func1<List<Integer>, Observable<Results>>() {
+                        @Override
+                        public Observable<Results> call(List<Integer> integers) {
+                            mTotalPages = integers != null && integers.size() > 0 ? integers.get(0) : 0;
+                            return apiTest.getLastWeekResults();
+                        }
+                    })
+                    .subscribeOn(Schedulers.from(AsyncTask.THREAD_POOL_EXECUTOR))
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe(new Action1<Results>() {
+                        @Override
+                        public void call(Results results) {
+                            mTextView.setText(results.toString());
+
+                            Log.d(TAG, getActivity() == null ? "is null" : "it's not");
+                            Toast.makeText(getActivity(), "" +mTotalPages, Toast.LENGTH_SHORT).show();
+                        }
+                    }, new Action1<Throwable>() {
+                        @Override
+                        public void call(Throwable throwable) {
+                            Log.e(TAG, "Error", throwable);
+                        }
+                    });
+        }
+
+
     }
 
 }
