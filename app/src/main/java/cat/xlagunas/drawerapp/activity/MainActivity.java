@@ -1,33 +1,34 @@
-package cat.xlagunas.drawerapp;
-
-import android.app.Activity;
+package cat.xlagunas.drawerapp.activity;
 
 import android.app.ActionBar;
+import android.app.Activity;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.content.Context;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.v4.app.FragmentActivity;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.support.v4.widget.DrawerLayout;
 import android.view.View;
 import android.view.ViewGroup;
-import android.support.v4.widget.DrawerLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import java.util.List;
 
 import javax.inject.Inject;
 
+import cat.xlagunas.drawerapp.CustomApplication;
+import cat.xlagunas.drawerapp.fragment.NavigationDrawerFragment;
+import cat.xlagunas.drawerapp.R;
+import cat.xlagunas.drawerapp.ResultActivityModule;
 import cat.xlagunas.drawerapp.api.ApiTest;
 import cat.xlagunas.drawerapp.api.model.Results;
-import cat.xlagunas.drawerapp.api.model.WeatherModel;
-import retrofit.Callback;
-import retrofit.RetrofitError;
-import retrofit.client.Response;
+
+import dagger.ObjectGraph;
 import rx.Observable;
 import rx.android.app.AppObservable;
 import rx.android.schedulers.AndroidSchedulers;
@@ -36,14 +37,18 @@ import rx.functions.Func1;
 import rx.schedulers.Schedulers;
 
 
-public class MainActivity extends Activity implements NavigationDrawerFragment.NavigationDrawerCallbacks {
+public class MainActivity extends FragmentActivity implements NavigationDrawerFragment.NavigationDrawerCallbacks {
 
     /**
      * Fragment managing the behaviors, interactions and presentation of the navigation drawer.
      */
     private NavigationDrawerFragment mNavigationDrawerFragmentStart;
+    private static ObjectGraph activityGraph;
     private String TAG = this.getClass().getSimpleName();
+    private int mTotalPages;
+    private Context mContext;
 
+    @Inject ApiTest apiTest;
 
     /**
      * Used to store the last screen title. For use in {@link #restoreActionBar()}.
@@ -53,9 +58,11 @@ public class MainActivity extends Activity implements NavigationDrawerFragment.N
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Log.d(TAG, "Creating Activity");
 
         CustomApplication app = (CustomApplication) getApplication();
-        app.inject(this);
+        activityGraph = app.createScopedGraph(new ResultActivityModule(this));
+        activityGraph.inject(this);
 
         setContentView(R.layout.activity_main);
 
@@ -69,6 +76,34 @@ public class MainActivity extends Activity implements NavigationDrawerFragment.N
                 R.id.navigation_drawer_start,
                 (DrawerLayout) findViewById(R.id.drawer_layout));
 
+
+    }
+
+    private void initResultCalls(){
+        AppObservable.bindFragment(this, apiTest.getMaximumRounds());
+
+        apiTest
+                .getMaximumRounds()
+                .flatMap(new Func1<List<Integer>, Observable<Results>>() {
+                    @Override
+                    public Observable<Results> call(List<Integer> integers) {
+                        mTotalPages = integers != null && integers.size() > 0 ? integers.get(0) : 0;
+                        return apiTest.getLastWeekResults();
+                    }
+                })
+                .subscribeOn(Schedulers.from(AsyncTask.THREAD_POOL_EXECUTOR))
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Action1<Results>() {
+                    @Override
+                    public void call(Results results) {
+                        Log.i(TAG, "SUCCESS " + results.toString());
+                    }
+                }, new Action1<Throwable>() {
+                    @Override
+                    public void call(Throwable throwable) {
+                        Log.e(TAG, "Error", throwable);
+                    }
+                });
     }
 
     @Override
@@ -131,13 +166,18 @@ public class MainActivity extends Activity implements NavigationDrawerFragment.N
         return super.onOptionsItemSelected(item);
     }
 
-    /**
-     * A placeholder fragment containing a simple view.
-     */
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        Log.d(TAG, "destroying activity");
+        activityGraph = null;
+    }
+
     public static class PlaceholderFragment extends Fragment {
 
-        @Inject ApiTest apiTest;
-        private final static String TAG = PlaceholderFragment.class.getSimpleName();
+        @Inject
+        ApiTest apiTest;
+        private static final String TAG = PlaceholderFragment.class.getSimpleName();
         /**
          * The fragment argument representing the section number for this
          * fragment.
@@ -174,9 +214,9 @@ public class MainActivity extends Activity implements NavigationDrawerFragment.N
         public void onActivityCreated(Bundle savedInstanceState) {
             super.onActivityCreated(savedInstanceState);
             CustomApplication app = (CustomApplication) getActivity().getApplication();
-            app.inject(this);
+            activityGraph.inject(this);
             Log.d(TAG, "Call onActivityCreated");
-            initResultCalls();
+//            initResultCalls();
 
         }
 
@@ -189,37 +229,23 @@ public class MainActivity extends Activity implements NavigationDrawerFragment.N
 
         }
 
-        private void initResultCalls(){
-            AppObservable.bindFragment(this, apiTest.getMaximumRounds());
-
-            apiTest
-                    .getMaximumRounds()
-                    .flatMap(new Func1<List<Integer>, Observable<Results>>() {
-                        @Override
-                        public Observable<Results> call(List<Integer> integers) {
-                            mTotalPages = integers != null && integers.size() > 0 ? integers.get(0) : 0;
-                            return apiTest.getLastWeekResults();
-                        }
-                    })
-                    .subscribeOn(Schedulers.from(AsyncTask.THREAD_POOL_EXECUTOR))
-                    .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe(new Action1<Results>() {
-                        @Override
-                        public void call(Results results) {
-                            mTextView.setText(results.toString());
-
-                            Log.d(TAG, getActivity() == null ? "is null" : "it's not");
-                            Toast.makeText(getActivity(), "" +mTotalPages, Toast.LENGTH_SHORT).show();
-                        }
-                    }, new Action1<Throwable>() {
-                        @Override
-                        public void call(Throwable throwable) {
-                            Log.e(TAG, "Error", throwable);
-                        }
-                    });
+        @Override
+        public void onDestroy() {
+            super.onDestroy();
+            Log.d(TAG, "onDestroy");
         }
 
+        @Override
+        public void onDetach() {
+            super.onDetach();
+            Log.d(TAG, "onDetach");
+        }
 
+        @Override
+        public void onDestroyView() {
+            super.onDestroyView();
+            Log.d(TAG, "onDestroyView");
+        }
     }
 
 }

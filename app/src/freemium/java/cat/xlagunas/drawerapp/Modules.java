@@ -8,7 +8,7 @@ import java.util.List;
  */
 public class Modules {
     public static List<Object> list() {
-        return Arrays.asList( new ApplicationModule(), new TestModule() );
+        return Arrays.asList( (Object)new ApplicationModule());
     }
 
 }

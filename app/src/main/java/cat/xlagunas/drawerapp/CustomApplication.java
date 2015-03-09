@@ -21,4 +21,8 @@ public class CustomApplication extends Application {
     public void inject(Object object) {
         graph.inject(object);
     }
+
+    public ObjectGraph createScopedGraph(Object... modules) {
+        return graph.plus(modules);
+    }
 }

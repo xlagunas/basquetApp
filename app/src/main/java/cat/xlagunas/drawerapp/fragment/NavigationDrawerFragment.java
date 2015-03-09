@@ -1,4 +1,4 @@
-package cat.xlagunas.drawerapp;
+package cat.xlagunas.drawerapp.fragment;
 
 
 import android.app.Activity;
@@ -21,6 +21,8 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
+
+import cat.xlagunas.drawerapp.R;
 
 /**
  * Fragment used for managing interactions for and presentation of a navigation drawer.
@@ -85,6 +87,7 @@ public class NavigationDrawerFragment extends Fragment {
         // Indicate that this fragment would like to influence the set of actions in the action bar.
         setHasOptionsMenu(true);
     }
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
