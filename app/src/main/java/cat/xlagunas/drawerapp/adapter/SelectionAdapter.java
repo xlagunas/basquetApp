@@ -1,10 +1,12 @@
 package cat.xlagunas.drawerapp.adapter;
 
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.List;
 
@@ -17,13 +19,17 @@ import cat.xlagunas.drawerapp.api.model.TeamBasic;
 public class SelectionAdapter extends RecyclerView.Adapter {
 
     public List<TeamBasic> contents;
+    public SelectionCallback mCallback;
+
+    private final static String TAG = SelectionAdapter.class.getSimpleName();
 
     public SelectionAdapter() {
         super();
     }
 
-    public SelectionAdapter(List<TeamBasic> contents){
+    public SelectionAdapter(List<TeamBasic> contents, SelectionCallback callback){
         this.contents = contents;
+        this.mCallback = callback;
     }
 
 
@@ -48,7 +54,17 @@ public class SelectionAdapter extends RecyclerView.Adapter {
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
 
         if (holder instanceof NoElementsViewHolder == false) {
-            ((SelectionViewHolder) holder).favTitle.setText(contents.get(position).getNom());
+            final TeamBasic team = contents.get(position);
+            ((SelectionViewHolder) holder).favTitle.setText(team.getNom());
+
+            holder.itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (mCallback != null){
+                        mCallback.onItemSelected(team);
+                    }
+                }
+            });
         }
     }
 
@@ -78,5 +94,9 @@ public class SelectionAdapter extends RecyclerView.Adapter {
         public NoElementsViewHolder(View itemView) {
             super(itemView);
         }
+    }
+
+    public static interface SelectionCallback {
+        public void onItemSelected(TeamBasic team);
     }
 }

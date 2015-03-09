@@ -3,21 +3,13 @@ package cat.xlagunas.drawerapp.adapter;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
-import android.support.v4.app.FragmentStatePagerAdapter;
 
 import java.util.List;
-
-import javax.inject.Inject;
-
-import cat.xlagunas.drawerapp.api.ApiTest;
 
 /**
  * Created by xlagunas on 05/03/15.
  */
 public class ResultsViewPager extends FragmentPagerAdapter {
-
-    @Inject
-    ApiTest apiTest;
 
     private List<Fragment> mFragments;
 

@@ -15,11 +15,14 @@ public class FavoriteSelectionActivity extends FragmentActivity implements OnFra
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        getSupportFragmentManager()
-                .beginTransaction()
-                .replace(android.R.id.content, FavoriteSelectionFragment.newInstance(FavoriteSelectionFragment.TYPE_CLUB))
-                .addToBackStack(FavoriteSelectionFragment.TAG)
-                .commit();
+
+        if (getSupportFragmentManager().findFragmentByTag(FavoriteSelectionFragment.TAG) == null) {
+            getSupportFragmentManager()
+                    .beginTransaction()
+                    .replace(android.R.id.content, FavoriteSelectionFragment.newInstance(FavoriteSelectionFragment.TYPE_CLUB), FavoriteSelectionFragment.TAG)
+                    .addToBackStack(FavoriteSelectionFragment.TAG)
+                    .commit();
+        }
     }
 
 

@@ -1,34 +1,24 @@
 package cat.xlagunas.drawerapp.activity;
 
 import android.app.ActionBar;
-import android.app.Activity;
-import android.app.Fragment;
 import android.app.FragmentManager;
 import android.content.Context;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.support.v4.widget.DrawerLayout;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.TextView;
 
 import java.util.List;
-
-import javax.inject.Inject;
 
 import cat.xlagunas.drawerapp.CustomApplication;
 import cat.xlagunas.drawerapp.fragment.NavigationDrawerFragment;
 import cat.xlagunas.drawerapp.R;
-import cat.xlagunas.drawerapp.ResultActivityModule;
 import cat.xlagunas.drawerapp.api.ApiTest;
 import cat.xlagunas.drawerapp.api.model.Results;
 
-import dagger.ObjectGraph;
 import rx.Observable;
 import rx.android.app.AppObservable;
 import rx.android.schedulers.AndroidSchedulers;
@@ -39,16 +29,13 @@ import rx.schedulers.Schedulers;
 
 public class MainActivity extends FragmentActivity implements NavigationDrawerFragment.NavigationDrawerCallbacks {
 
-    /**
-     * Fragment managing the behaviors, interactions and presentation of the navigation drawer.
-     */
-    private NavigationDrawerFragment mNavigationDrawerFragmentStart;
-    private static ObjectGraph activityGraph;
+
     private String TAG = this.getClass().getSimpleName();
+    private NavigationDrawerFragment mNavigationDrawerFragmentStart;
     private int mTotalPages;
     private Context mContext;
+    private ApiTest apiTest;
 
-    @Inject ApiTest apiTest;
 
     /**
      * Used to store the last screen title. For use in {@link #restoreActionBar()}.
@@ -60,9 +47,8 @@ public class MainActivity extends FragmentActivity implements NavigationDrawerFr
         super.onCreate(savedInstanceState);
         Log.d(TAG, "Creating Activity");
 
+
         CustomApplication app = (CustomApplication) getApplication();
-        activityGraph = app.createScopedGraph(new ResultActivityModule(this));
-        activityGraph.inject(this);
 
         setContentView(R.layout.activity_main);
 
@@ -76,6 +62,7 @@ public class MainActivity extends FragmentActivity implements NavigationDrawerFr
                 R.id.navigation_drawer_start,
                 (DrawerLayout) findViewById(R.id.drawer_layout));
 
+        apiTest = app.getApiService();
 
     }
 
@@ -110,9 +97,9 @@ public class MainActivity extends FragmentActivity implements NavigationDrawerFr
     public void onNavigationDrawerItemSelected(int position) {
         // update the main content by replacing fragments
         FragmentManager fragmentManager = getFragmentManager();
-        fragmentManager.beginTransaction()
-                .replace(R.id.container, PlaceholderFragment.newInstance(position + 1))
-                .commit();
+//        fragmentManager.beginTransaction()
+//                .replace(R.id.container, PlaceholderFragment.newInstance(position + 1))
+//                .commit();
     }
 
     public void onSectionAttached(int number) {
@@ -170,82 +157,5 @@ public class MainActivity extends FragmentActivity implements NavigationDrawerFr
     public void onDestroy() {
         super.onDestroy();
         Log.d(TAG, "destroying activity");
-        activityGraph = null;
     }
-
-    public static class PlaceholderFragment extends Fragment {
-
-        @Inject
-        ApiTest apiTest;
-        private static final String TAG = PlaceholderFragment.class.getSimpleName();
-        /**
-         * The fragment argument representing the section number for this
-         * fragment.
-         */
-        private static final String ARG_SECTION_NUMBER = "section_number";
-        private TextView mTextView;
-        private int mTotalPages;
-        private Context mContext;
-
-        /**
-         * Returns a new instance of this fragment for the given section
-         * number.
-         */
-        public static PlaceholderFragment newInstance(int sectionNumber) {
-            PlaceholderFragment fragment = new PlaceholderFragment();
-            Bundle args = new Bundle();
-            args.putInt(ARG_SECTION_NUMBER, sectionNumber);
-            fragment.setArguments(args);
-            return fragment;
-        }
-
-        public PlaceholderFragment() {
-        }
-
-        @Override
-        public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                                 Bundle savedInstanceState) {
-            View rootView = inflater.inflate(R.layout.fragment_main, container, false);
-            mTextView = (TextView) rootView.findViewById(R.id.section_label);
-            return rootView;
-        }
-
-        @Override
-        public void onActivityCreated(Bundle savedInstanceState) {
-            super.onActivityCreated(savedInstanceState);
-            CustomApplication app = (CustomApplication) getActivity().getApplication();
-            activityGraph.inject(this);
-            Log.d(TAG, "Call onActivityCreated");
-//            initResultCalls();
-
-        }
-
-        @Override
-        public void onAttach(Activity activity) {
-            super.onAttach(activity);
-            Log.d(TAG, "onAttach");
-            ((MainActivity) activity).onSectionAttached(
-                    getArguments().getInt(ARG_SECTION_NUMBER));
-
-        }
-
-        @Override
-        public void onDestroy() {
-            super.onDestroy();
-            Log.d(TAG, "onDestroy");
-        }
-
-        @Override
-        public void onDetach() {
-            super.onDetach();
-            Log.d(TAG, "onDetach");
-        }
-
-        @Override
-        public void onDestroyView() {
-            super.onDestroyView();
-            Log.d(TAG, "onDestroyView");
-        }
-    }
-
 }
