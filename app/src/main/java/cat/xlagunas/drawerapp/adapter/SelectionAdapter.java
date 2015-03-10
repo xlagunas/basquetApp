@@ -1,24 +1,26 @@
 package cat.xlagunas.drawerapp.adapter;
 
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Filter;
+import android.widget.Filterable;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import java.util.List;
 
 import cat.xlagunas.drawerapp.R;
 import cat.xlagunas.drawerapp.api.model.TeamBasic;
+import cat.xlagunas.drawerapp.util.TextFilter;
 
 /**
  * Created by xlagunas on 09/03/15.
  */
-public class SelectionAdapter extends RecyclerView.Adapter {
+public class SelectionAdapter extends RecyclerView.Adapter implements Filterable{
 
     public List<TeamBasic> contents;
+    public List<TeamBasic> filteredData;
     public SelectionCallback mCallback;
 
     private final static String TAG = SelectionAdapter.class.getSimpleName();
@@ -30,6 +32,7 @@ public class SelectionAdapter extends RecyclerView.Adapter {
     public SelectionAdapter(List<TeamBasic> contents, SelectionCallback callback){
         this.contents = contents;
         this.mCallback = callback;
+        this.filteredData = contents;
     }
 
 
@@ -54,7 +57,7 @@ public class SelectionAdapter extends RecyclerView.Adapter {
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
 
         if (holder instanceof NoElementsViewHolder == false) {
-            final TeamBasic team = contents.get(position);
+            final TeamBasic team = filteredData.get(position);
             ((SelectionViewHolder) holder).favTitle.setText(team.getNom());
 
             holder.itemView.setOnClickListener(new View.OnClickListener() {
@@ -70,14 +73,33 @@ public class SelectionAdapter extends RecyclerView.Adapter {
 
     @Override
     public int getItemViewType(int position) {
-        if (contents == null)
+        if (filteredData == null)
             return 1;
         return super.getItemViewType(position);
     }
 
     @Override
     public int getItemCount() {
-        return contents != null ? contents.size() : 1;
+        return filteredData != null ? filteredData.size() : 1;
+    }
+
+    @Override
+    public Filter getFilter() {
+        TextFilter filter = new TextFilter(){
+            @Override
+            protected void publishResults(CharSequence constraint, FilterResults results) {
+                filteredData = (List<TeamBasic>) results.values;
+                notifyDataSetChanged();
+            }
+        };
+        filter.setOriginalData(contents);
+        return filter;
+    }
+
+    public void resetContent() {
+        filteredData.clear();
+        filteredData.addAll(contents);
+        notifyDataSetChanged();
     }
 
     public static class SelectionViewHolder extends RecyclerView.ViewHolder{

@@ -17,4 +17,5 @@
     <string name="title_activity_favorite_selection">FavoriteSelectionActivity</string>
 
     <string name="hello_world">Hello world!</string>
+    <string name="action_search">Busca el club</string>
 </resources>

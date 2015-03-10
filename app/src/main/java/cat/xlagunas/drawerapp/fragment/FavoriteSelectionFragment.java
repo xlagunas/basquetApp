@@ -1,6 +1,8 @@
 package cat.xlagunas.drawerapp.fragment;
 
 import android.app.Activity;
+import android.app.SearchManager;
+import android.content.Context;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -9,8 +11,11 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.SearchView;
 
 import java.util.List;
 
@@ -40,7 +45,6 @@ public class FavoriteSelectionFragment extends Fragment {
     private RecyclerView mRecyclerView;
     private SelectionAdapter mAdapter;
 
-
     public static FavoriteSelectionFragment newInstance(int param1) {
         FavoriteSelectionFragment fragment = new FavoriteSelectionFragment();
         Bundle args = new Bundle();
@@ -67,6 +71,8 @@ public class FavoriteSelectionFragment extends Fragment {
                              Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_favorite_selection, container, false);
         mRecyclerView = (RecyclerView) v.findViewById(android.R.id.list);
+
+        setHasOptionsMenu(true);
 
         return v;
     }
@@ -139,6 +145,51 @@ public class FavoriteSelectionFragment extends Fragment {
     public void onDetach() {
         super.onDetach();
         mListener = null;
+    }
+
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        menu.clear();
+        inflater.inflate(R.menu.menu_favorite_selection, menu);
+
+        // Get the SearchView and set the searchable configuration
+        final SearchManager searchManager = (SearchManager) getActivity().getSystemService(Context.SEARCH_SERVICE);
+        final SearchView searchView = (SearchView) menu.findItem(R.id.action_search).getActionView();
+        // Assumes current activity is the searchable activity
+        searchView.setSearchableInfo(searchManager.getSearchableInfo(getActivity().getComponentName()));
+//        searchView.setIconifiedByDefault(false); // Do not iconify the widget; expand it by default
+
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                if (query != null && !query.equals("")){
+                    mAdapter.getFilter().filter(query);
+                    searchView.clearFocus();
+                    return true;
+                } else {
+                    return false;
+                }
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                return false;
+            }
+
+        });
+
+        searchView.setOnCloseListener(new SearchView.OnCloseListener() {
+            @Override
+            public boolean onClose() {
+                mAdapter.resetContent();
+                mRecyclerView.getLayoutManager().scrollToPosition(0);
+                searchView.clearFocus();
+                return true;
+            }
+        });
+
+        super.onCreateOptionsMenu(menu,inflater);
     }
 
 }
