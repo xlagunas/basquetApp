@@ -2,11 +2,11 @@ package cat.xlagunas.drawerapp.api;
 
 import java.util.List;
 
+import cat.xlagunas.drawerapp.api.model.ClubBasic;
 import cat.xlagunas.drawerapp.api.model.Results;
-import cat.xlagunas.drawerapp.api.model.TeamBasic;
-import cat.xlagunas.drawerapp.api.model.WeatherModel;
-import retrofit.Callback;
+import cat.xlagunas.drawerapp.api.model.Team;
 import retrofit.http.GET;
+import retrofit.http.Path;
 import rx.Observable;
 
 /**
@@ -21,7 +21,10 @@ public interface ApiTest {
     public Observable<List<Integer>> getMaximumRounds();
 
     @GET("/clubs/buscador_per_lletra")
-    public Observable<List<TeamBasic>> getClubsList();
+    public Observable<List<ClubBasic>> getClubsList();
+
+    @GET("/equips/llistat_equips_club/{clubId}")
+    public Observable<List<Team>> getTeamsByClubId(@Path("clubId") String clubId);
 
 
 

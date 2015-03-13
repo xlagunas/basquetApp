@@ -3,6 +3,8 @@ package cat.xlagunas.drawerapp.activity;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
+import android.support.v7.app.ActionBarActivity;
+import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 
@@ -10,16 +12,20 @@ import cat.xlagunas.drawerapp.R;
 import cat.xlagunas.drawerapp.fragment.FavoriteSelectionFragment;
 import cat.xlagunas.drawerapp.fragment.OnFragmentInteractionListener;
 
-public class FavoriteSelectionActivity extends FragmentActivity implements OnFragmentInteractionListener{
+public class FavoriteSelectionActivity extends ActionBarActivity implements OnFragmentInteractionListener{
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_selection);
+
+        Toolbar toolbar = (Toolbar)findViewById(R.id.my_awesome_toolbar);
+        setSupportActionBar(toolbar);
 
         if (getSupportFragmentManager().findFragmentByTag(FavoriteSelectionFragment.TAG) == null) {
             getSupportFragmentManager()
                     .beginTransaction()
-                    .replace(android.R.id.content, FavoriteSelectionFragment.newInstance(FavoriteSelectionFragment.TYPE_CLUB), FavoriteSelectionFragment.TAG)
+                    .replace(R.id.fragment_container, FavoriteSelectionFragment.newInstance(FavoriteSelectionFragment.TYPE_CLUB), FavoriteSelectionFragment.TAG)
                     .addToBackStack(FavoriteSelectionFragment.TAG)
                     .commit();
         }

@@ -11,7 +11,7 @@ import android.widget.TextView;
 import java.util.List;
 
 import cat.xlagunas.drawerapp.R;
-import cat.xlagunas.drawerapp.api.model.TeamBasic;
+import cat.xlagunas.drawerapp.api.model.ClubBasic;
 import cat.xlagunas.drawerapp.util.TextFilter;
 
 /**
@@ -19,8 +19,8 @@ import cat.xlagunas.drawerapp.util.TextFilter;
  */
 public class SelectionAdapter extends RecyclerView.Adapter implements Filterable{
 
-    public List<TeamBasic> contents;
-    public List<TeamBasic> filteredData;
+    public List<ClubBasic> contents;
+    public List<ClubBasic> filteredData;
     public SelectionCallback mCallback;
 
     private final static String TAG = SelectionAdapter.class.getSimpleName();
@@ -29,7 +29,7 @@ public class SelectionAdapter extends RecyclerView.Adapter implements Filterable
         super();
     }
 
-    public SelectionAdapter(List<TeamBasic> contents, SelectionCallback callback){
+    public SelectionAdapter(List<ClubBasic> contents, SelectionCallback callback){
         this.contents = contents;
         this.mCallback = callback;
         this.filteredData = contents;
@@ -57,7 +57,7 @@ public class SelectionAdapter extends RecyclerView.Adapter implements Filterable
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
 
         if (holder instanceof NoElementsViewHolder == false) {
-            final TeamBasic team = filteredData.get(position);
+            final ClubBasic team = filteredData.get(position);
             ((SelectionViewHolder) holder).favTitle.setText(team.getNom());
 
             holder.itemView.setOnClickListener(new View.OnClickListener() {
@@ -88,7 +88,7 @@ public class SelectionAdapter extends RecyclerView.Adapter implements Filterable
         TextFilter filter = new TextFilter(){
             @Override
             protected void publishResults(CharSequence constraint, FilterResults results) {
-                filteredData = (List<TeamBasic>) results.values;
+                filteredData = (List<ClubBasic>) results.values;
                 notifyDataSetChanged();
             }
         };
@@ -119,6 +119,6 @@ public class SelectionAdapter extends RecyclerView.Adapter implements Filterable
     }
 
     public static interface SelectionCallback {
-        public void onItemSelected(TeamBasic team);
+        public void onItemSelected(ClubBasic team);
     }
 }

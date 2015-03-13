@@ -5,16 +5,16 @@ import android.widget.Filter;
 import java.util.ArrayList;
 import java.util.List;
 
-import cat.xlagunas.drawerapp.api.model.TeamBasic;
+import cat.xlagunas.drawerapp.api.model.ClubBasic;
 
 /**
  * Created by xlagunas on 10/03/15.
  */
 public class TextFilter extends Filter {
 
-    private List<TeamBasic> originalData;
+    private List<ClubBasic> originalData;
 
-    public void setOriginalData(List<TeamBasic> originalData) {
+    public void setOriginalData(List<ClubBasic> originalData) {
         this.originalData = originalData;
     }
 
@@ -26,9 +26,9 @@ public class TextFilter extends Filter {
 
 
         int count = originalData.size();
-        final List<TeamBasic> nlist = new ArrayList<TeamBasic>(count);
+        final List<ClubBasic> nlist = new ArrayList<ClubBasic>(count);
 
-        TeamBasic filterableString ;
+        ClubBasic filterableString ;
 
         for (int i = 0; i < count; i++) {
             filterableString = originalData.get(i);

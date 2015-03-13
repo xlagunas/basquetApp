@@ -9,13 +9,13 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.SearchView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.SearchView;
 
 import java.util.List;
 
@@ -23,7 +23,7 @@ import cat.xlagunas.drawerapp.CustomApplication;
 import cat.xlagunas.drawerapp.R;
 import cat.xlagunas.drawerapp.adapter.SelectionAdapter;
 import cat.xlagunas.drawerapp.api.ApiTest;
-import cat.xlagunas.drawerapp.api.model.TeamBasic;
+import cat.xlagunas.drawerapp.api.model.ClubBasic;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Action1;
 import rx.schedulers.Schedulers;
@@ -104,12 +104,12 @@ public class FavoriteSelectionFragment extends Fragment {
                 .getClubsList()
                 .subscribeOn(Schedulers.from(AsyncTask.THREAD_POOL_EXECUTOR))
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Action1<List<TeamBasic>>() {
+                .subscribe(new Action1<List<ClubBasic>>() {
                     @Override
-                    public void call(List<TeamBasic> teamList) {
+                    public void call(List<ClubBasic> teamList) {
                         mAdapter = new SelectionAdapter(teamList, new SelectionAdapter.SelectionCallback() {
                             @Override
-                            public void onItemSelected(TeamBasic team) {
+                            public void onItemSelected(ClubBasic team) {
                                 Log.d(TAG, "Selected code: "+team.getCodi_club());
                             }
                         });
@@ -174,6 +174,10 @@ public class FavoriteSelectionFragment extends Fragment {
 
             @Override
             public boolean onQueryTextChange(String newText) {
+                if (newText != null && !newText.equals("") && newText.length() > 3){
+                    mAdapter.getFilter().filter(newText);
+                    return true;
+                }
                 return false;
             }
 
