@@ -1,9 +1,12 @@
 package cat.xlagunas.drawerapp.api.model;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class Team {
+public class Team implements BasicEntity, Parcelable{
 
     @Expose
     private String nom;
@@ -110,4 +113,53 @@ public class Team {
         this.nomCategoria = nomCategoria;
     }
 
+    @Override
+    public String getDisplayName() {
+        return getNomCategoria();
+    }
+
+    @Override
+    public String getKeyValue() {
+        return getCodiCategoria();
+    }
+
+    @Override
+    public int getType() {
+        return BasicEntity.TEAM_ENTITY;
+    }
+
+    protected Team(Parcel in) {
+        nom = in.readString();
+        codiEquip = in.readString();
+        codiClub = in.readString();
+        codiCategoria = in.readString();
+        nomCategoria = in.readString();
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(nom);
+        dest.writeString(codiEquip);
+        dest.writeString(codiClub);
+        dest.writeString(codiCategoria);
+        dest.writeString(nomCategoria);
+    }
+
+    @SuppressWarnings("unused")
+    public static final Parcelable.Creator<Team> CREATOR = new Parcelable.Creator<Team>() {
+        @Override
+        public Team createFromParcel(Parcel in) {
+            return new Team(in);
+        }
+
+        @Override
+        public Team[] newArray(int size) {
+            return new Team[size];
+        }
+    };
 }

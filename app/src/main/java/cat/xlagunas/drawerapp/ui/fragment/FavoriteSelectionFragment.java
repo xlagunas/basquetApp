@@ -1,9 +1,8 @@
-package cat.xlagunas.drawerapp.fragment;
+package cat.xlagunas.drawerapp.ui.fragment;
 
 import android.app.Activity;
 import android.app.SearchManager;
 import android.content.Context;
-import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -21,9 +20,12 @@ import java.util.List;
 
 import cat.xlagunas.drawerapp.CustomApplication;
 import cat.xlagunas.drawerapp.R;
-import cat.xlagunas.drawerapp.adapter.SelectionAdapter;
+import cat.xlagunas.drawerapp.ui.adapter.SelectionAdapter;
 import cat.xlagunas.drawerapp.api.ApiTest;
+import cat.xlagunas.drawerapp.api.model.BasicEntity;
 import cat.xlagunas.drawerapp.api.model.ClubBasic;
+import cat.xlagunas.drawerapp.api.model.Team;
+import cat.xlagunas.drawerapp.api.model.TeamCategory;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Action1;
 import rx.schedulers.Schedulers;
@@ -36,19 +38,31 @@ public class FavoriteSelectionFragment extends Fragment {
     public final static String TAG = FavoriteSelectionFragment.class.getSimpleName();
 
     private static final String ARG_TYPE = "type";
+    private static final String ARG_CLUB_ID = "club_id";
     private ApiTest apiTest;
 
     private int mType;
+    private String mTeamId;
 
     private OnFragmentInteractionListener mListener;
 
     private RecyclerView mRecyclerView;
     private SelectionAdapter mAdapter;
 
-    public static FavoriteSelectionFragment newInstance(int param1) {
+    public static FavoriteSelectionFragment findClubs() {
         FavoriteSelectionFragment fragment = new FavoriteSelectionFragment();
         Bundle args = new Bundle();
-        args.putInt(ARG_TYPE, param1);
+        args.putInt(ARG_TYPE, TYPE_CLUB);
+        fragment.setArguments(args);
+        return fragment;
+    }
+
+    public static FavoriteSelectionFragment findTeamsByClubId(String teamId){
+        FavoriteSelectionFragment fragment = new FavoriteSelectionFragment();
+        Bundle args = new Bundle();
+        args.putInt(ARG_TYPE, TYPE_TEAM);
+        args.putString(ARG_CLUB_ID, teamId);
+
         fragment.setArguments(args);
         return fragment;
     }
@@ -61,7 +75,10 @@ public class FavoriteSelectionFragment extends Fragment {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
             mType = getArguments().getInt(ARG_TYPE);
+            mTeamId = mType == TYPE_TEAM ? getArguments().getString(ARG_CLUB_ID) : null;
+
         }
+
         CustomApplication app = (CustomApplication) getActivity().getApplication();
         apiTest = app.getApiService();
     }
@@ -87,14 +104,39 @@ public class FavoriteSelectionFragment extends Fragment {
                     requestClubCall();
                     break;
                 case TYPE_TEAM:
-                    requestTeamCall();
+                    requestTeamsCall();
                     break;
             }
         }
 
     }
 
-    private void requestTeamCall() {
+    private void requestTeamsCall() {
+        apiTest
+                .getTeamsByClubId(mTeamId)
+                .subscribeOn(Schedulers.from(AsyncTask.THREAD_POOL_EXECUTOR))
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Action1<List<Team>>() {
+                    @Override
+                    public void call(List<Team> teams) {
+
+                        List<? extends BasicEntity> teamList = TeamCategory.obtainTeamCategories(teams);
+
+                        mAdapter = new SelectionAdapter((List<BasicEntity>) teamList, new SelectionAdapter.SelectionCallback() {
+                            @Override
+                            public void onItemSelected(BasicEntity team) {
+                                mListener.onFragmentInteraction((TeamCategory) team);
+                            }
+                        });
+                        mRecyclerView.setAdapter(mAdapter);
+                        mAdapter.notifyDataSetChanged();
+                    }
+                }, new Action1<Throwable>() {
+                    @Override
+                    public void call(Throwable throwable) {
+                        Log.e(TAG, "error", throwable);
+                    }
+                });
 
     }
 
@@ -107,10 +149,13 @@ public class FavoriteSelectionFragment extends Fragment {
                 .subscribe(new Action1<List<ClubBasic>>() {
                     @Override
                     public void call(List<ClubBasic> teamList) {
-                        mAdapter = new SelectionAdapter(teamList, new SelectionAdapter.SelectionCallback() {
+                        List<? extends BasicEntity> entities = teamList;
+
+                        mAdapter = new SelectionAdapter((List<BasicEntity>) entities, new SelectionAdapter.SelectionCallback() {
                             @Override
-                            public void onItemSelected(ClubBasic team) {
-                                Log.d(TAG, "Selected code: "+team.getCodi_club());
+                            public void onItemSelected(BasicEntity entity) {
+                                Log.d(TAG, "Selected code: "+entity.getKeyValue());
+                                mListener.onFragmentInteraction((ClubBasic) entity);
                             }
                         });
                         mRecyclerView.setAdapter(mAdapter);
@@ -122,12 +167,6 @@ public class FavoriteSelectionFragment extends Fragment {
                         Log.e(TAG, "Error", throwable);
                     }
                 });
-    }
-
-    public void onButtonPressed(Uri uri) {
-        if (mListener != null) {
-            mListener.onFragmentInteraction(uri);
-        }
     }
 
     @Override

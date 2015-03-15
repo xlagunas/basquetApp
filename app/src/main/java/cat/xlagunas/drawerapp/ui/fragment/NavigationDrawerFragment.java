@@ -1,4 +1,4 @@
-package cat.xlagunas.drawerapp.fragment;
+package cat.xlagunas.drawerapp.ui.fragment;
 
 
 import android.app.Activity;

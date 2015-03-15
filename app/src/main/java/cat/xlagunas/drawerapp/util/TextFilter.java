@@ -5,6 +5,7 @@ import android.widget.Filter;
 import java.util.ArrayList;
 import java.util.List;
 
+import cat.xlagunas.drawerapp.api.model.BasicEntity;
 import cat.xlagunas.drawerapp.api.model.ClubBasic;
 
 /**
@@ -12,9 +13,9 @@ import cat.xlagunas.drawerapp.api.model.ClubBasic;
  */
 public class TextFilter extends Filter {
 
-    private List<ClubBasic> originalData;
+    private List<BasicEntity> originalData;
 
-    public void setOriginalData(List<ClubBasic> originalData) {
+    public void setOriginalData(List<BasicEntity> originalData) {
         this.originalData = originalData;
     }
 
@@ -26,13 +27,13 @@ public class TextFilter extends Filter {
 
 
         int count = originalData.size();
-        final List<ClubBasic> nlist = new ArrayList<ClubBasic>(count);
+        final List<BasicEntity> nlist = new ArrayList<BasicEntity>(count);
 
-        ClubBasic filterableString ;
+        BasicEntity filterableString ;
 
         for (int i = 0; i < count; i++) {
             filterableString = originalData.get(i);
-            if (filterableString.getNom().toLowerCase().contains(filterString)) {
+            if (filterableString.getDisplayName().toLowerCase().contains(filterString)) {
                 nlist.add(filterableString);
             }
         }

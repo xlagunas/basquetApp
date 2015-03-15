@@ -1,17 +1,15 @@
-package cat.xlagunas.drawerapp.activity;
+package cat.xlagunas.drawerapp.ui.activity;
 
 import android.content.Intent;
 import android.net.Uri;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
-import android.support.v4.app.FragmentActivity;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.Toolbar;
 
 import cat.xlagunas.drawerapp.R;
-import cat.xlagunas.drawerapp.adapter.SelectionAdapter;
-import cat.xlagunas.drawerapp.fragment.OnFragmentInteractionListener;
-import cat.xlagunas.drawerapp.fragment.TestFragment;
+import cat.xlagunas.drawerapp.ui.fragment.TestFragment.OnFragmentInteractionListener;
+import cat.xlagunas.drawerapp.ui.fragment.TestFragment;
 
 /**
  * Created by xlagunas on 08/03/15.
@@ -55,4 +53,6 @@ public class SelectionActivity extends ActionBarActivity implements OnFragmentIn
                 break;
         }
     }
+
+
 }

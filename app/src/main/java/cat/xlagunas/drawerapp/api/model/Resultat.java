@@ -62,6 +62,9 @@ public class Resultat {
     @Expose
     private Object isComunicadaAS;
 
+    public Resultat() {
+    }
+
     /**
      * 
      * @return

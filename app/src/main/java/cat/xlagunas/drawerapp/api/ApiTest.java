@@ -5,6 +5,7 @@ import java.util.List;
 import cat.xlagunas.drawerapp.api.model.ClubBasic;
 import cat.xlagunas.drawerapp.api.model.Results;
 import cat.xlagunas.drawerapp.api.model.Team;
+import cat.xlagunas.drawerapp.api.model.TeamDetails;
 import retrofit.http.GET;
 import retrofit.http.Path;
 import rx.Observable;
@@ -25,6 +26,9 @@ public interface ApiTest {
 
     @GET("/equips/llistat_equips_club/{clubId}")
     public Observable<List<Team>> getTeamsByClubId(@Path("clubId") String clubId);
+
+    @GET("/equips/fitxa/{categoryId}/{teamId}")
+    public TeamDetails getTeamDetails(@Path("categoryId")String categoryId, @Path("teamId") String teamId);
 
 
 

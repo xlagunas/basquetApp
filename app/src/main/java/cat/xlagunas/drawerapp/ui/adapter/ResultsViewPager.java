@@ -1,4 +1,4 @@
-package cat.xlagunas.drawerapp.adapter;
+package cat.xlagunas.drawerapp.ui.adapter;
 
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;

@@ -18,23 +18,3 @@
         />
 
 </android.support.v7.widget.CardView>
-
-    <!--<FrameLayout-->
-        <!--android:layout_width="56dp"-->
-        <!--android:layout_height="56dp"-->
-        <!--android:background="@drawable/fab"-->
-        <!--android:elevation="50dp"-->
-        <!--android:layout_alignParentEnd="true"-->
-        <!--android:layout_alignParentBottom="true"-->
-        <!--android:layout_marginRight="16dp"-->
-        <!--android:layout_marginBottom="16dp"-->
-        <!-->-->
-
-        <!--<Button-->
-            <!--android:id="@+id/fab_button"-->
-            <!--android:layout_width="match_parent"-->
-            <!--android:layout_height="match_parent"-->
-            <!--android:background="@drawable/ic_add_white_24dp"/>-->
-    <!--</FrameLayout>-->
-
-<!--</RelativeLayout>-->

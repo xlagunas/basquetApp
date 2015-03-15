@@ -1,4 +1,4 @@
-package cat.xlagunas.drawerapp.fragment;
+package cat.xlagunas.drawerapp.ui.fragment;
 
 import android.app.Activity;
 import android.content.Context;
@@ -17,7 +17,7 @@ import com.melnykov.fab.FloatingActionButton;
 
 import cat.xlagunas.drawerapp.CustomApplication;
 import cat.xlagunas.drawerapp.R;
-import cat.xlagunas.drawerapp.adapter.SelectionAdapter;
+import cat.xlagunas.drawerapp.ui.adapter.SelectionAdapter;
 
 public class TestFragment extends Fragment implements View.OnClickListener{
 
@@ -70,16 +70,6 @@ public class TestFragment extends Fragment implements View.OnClickListener{
         animateView();
 
         mRecyclerView.setAdapter(new SelectionAdapter());
-//        mRecyclerView.setAdapter(new SelectionAdapter(Arrays.asList(
-//                "C.E. Maristes Sants-Les Corts",
-//                "CCR Collblanc-La Torrassa",
-//                "C.B. L'Hospitalet",
-//                "AEC Collblanc-La Torrassa",
-//                "AEJ Riera Cornella",
-//                "B.C. Sant Joan Despí",
-//                "C.E. Maristes Sants-Les Corts",
-//                "B.A.M.",
-//                "A.E.S.E")));
 
         mRecyclerView.getAdapter().notifyDataSetChanged();
 
@@ -148,4 +138,9 @@ public class TestFragment extends Fragment implements View.OnClickListener{
         }
     }
 
-}
+    public static interface OnFragmentInteractionListener {
+        public void onFragmentInteraction(Uri uri);
+    }
+
+
+    }
