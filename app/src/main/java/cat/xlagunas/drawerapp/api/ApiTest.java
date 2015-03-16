@@ -15,11 +15,17 @@ import rx.Observable;
  */
 public interface ApiTest {
 
-    @GET("/resultats/get_resultats_ultima_jornada_jugada/1/041/101/02")
-    public Observable<Results> getLastWeekResults();
+    @GET("/resultats/get_resultats_ultima_jornada_jugada/{RegionId}/{categoryId}/{competitionId}/{groupId}")
+    public Results getLastWeekResults(@Path("RegionId") String RegionId,
+                                      @Path("categoryId") String categoryId,
+                                      @Path("competitionId") String competitionId,
+                                      @Path("groupId") String groupId);
 
-    @GET("/competicions/get_jornada_maxima_per_competicio/1/041/101/02")
-    public Observable<List<Integer>> getMaximumRounds();
+    @GET("/competicions/get_jornada_maxima_per_competicio/{RegionId}/{categoryId}/{competitionId}/{groupId}")
+    public List<Integer> getMaximumRounds(@Path("RegionId") String RegionId,
+                                    @Path("categoryId") String categoryId,
+                                    @Path("competitionId") String competitionId,
+                                    @Path("groupId") String groupId);
 
     @GET("/clubs/buscador_per_lletra")
     public Observable<List<ClubBasic>> getClubsList();

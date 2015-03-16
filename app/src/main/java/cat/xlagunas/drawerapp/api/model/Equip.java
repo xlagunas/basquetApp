@@ -1,85 +1,238 @@
 
 package cat.xlagunas.drawerapp.api.model;
 
-import java.util.List;
+import com.google.gson.annotations.Expose;
+import com.google.gson.annotations.SerializedName;
 
-public class Equip{
-   	private String categoria;
-   	private String color_pan;
-   	private String color_sam;
-   	private String dia_joc;
-   	private String equip_sec;
-   	private String foto;
-   	private String hora_joc;
-   	private String id_club;
-   	private String id_equip;
-   	private String nom;
-   	private String nom_categoria;
+public class Equip {
 
- 	public String getCategoria(){
-		return this.categoria;
-	}
-	public void setCategoria(String categoria){
-		this.categoria = categoria;
-	}
- 	public String getColor_pan(){
-		return this.color_pan;
-	}
-	public void setColor_pan(String color_pan){
-		this.color_pan = color_pan;
-	}
- 	public String getColor_sam(){
-		return this.color_sam;
-	}
-	public void setColor_sam(String color_sam){
-		this.color_sam = color_sam;
-	}
- 	public String getDia_joc(){
-		return this.dia_joc;
-	}
-	public void setDia_joc(String dia_joc){
-		this.dia_joc = dia_joc;
-	}
- 	public String getEquip_sec(){
-		return this.equip_sec;
-	}
-	public void setEquip_sec(String equip_sec){
-		this.equip_sec = equip_sec;
-	}
- 	public String getFoto(){
-		return this.foto;
-	}
-	public void setFoto(String foto){
-		this.foto = foto;
-	}
- 	public String getHora_joc(){
-		return this.hora_joc;
-	}
-	public void setHora_joc(String hora_joc){
-		this.hora_joc = hora_joc;
-	}
- 	public String getId_club(){
-		return this.id_club;
-	}
-	public void setId_club(String id_club){
-		this.id_club = id_club;
-	}
- 	public String getId_equip(){
-		return this.id_equip;
-	}
-	public void setId_equip(String id_equip){
-		this.id_equip = id_equip;
-	}
- 	public String getNom(){
-		return this.nom;
-	}
-	public void setNom(String nom){
-		this.nom = nom;
-	}
- 	public String getNom_categoria(){
-		return this.nom_categoria;
-	}
-	public void setNom_categoria(String nom_categoria){
-		this.nom_categoria = nom_categoria;
-	}
+    @SerializedName("id_club")
+    @Expose
+    private String idClub;
+    @Expose
+    private String nom;
+    @SerializedName("id_equip")
+    @Expose
+    private String idEquip;
+    @Expose
+    private Object foto;
+    @Expose
+    private String categoria;
+    @SerializedName("nom_categoria")
+    @Expose
+    private String nomCategoria;
+    @SerializedName("dia_joc")
+    @Expose
+    private String diaJoc;
+    @SerializedName("hora_joc")
+    @Expose
+    private String horaJoc;
+    @SerializedName("color_sam")
+    @Expose
+    private String colorSam;
+    @SerializedName("color_pan")
+    @Expose
+    private String colorPan;
+    @SerializedName("equip_sec")
+    @Expose
+    private Object equipSec;
+
+    /**
+     * 
+     * @return
+     *     The idClub
+     */
+    public String getIdClub() {
+        return idClub;
+    }
+
+    /**
+     * 
+     * @param idClub
+     *     The id_club
+     */
+    public void setIdClub(String idClub) {
+        this.idClub = idClub;
+    }
+
+    /**
+     * 
+     * @return
+     *     The nom
+     */
+    public String getNom() {
+        return nom;
+    }
+
+    /**
+     * 
+     * @param nom
+     *     The nom
+     */
+    public void setNom(String nom) {
+        this.nom = nom;
+    }
+
+    /**
+     * 
+     * @return
+     *     The idEquip
+     */
+    public String getIdEquip() {
+        return idEquip;
+    }
+
+    /**
+     * 
+     * @param idEquip
+     *     The id_equip
+     */
+    public void setIdEquip(String idEquip) {
+        this.idEquip = idEquip;
+    }
+
+    /**
+     * 
+     * @return
+     *     The foto
+     */
+    public Object getFoto() {
+        return foto;
+    }
+
+    /**
+     * 
+     * @param foto
+     *     The foto
+     */
+    public void setFoto(Object foto) {
+        this.foto = foto;
+    }
+
+    /**
+     * 
+     * @return
+     *     The categoria
+     */
+    public String getCategoria() {
+        return categoria;
+    }
+
+    /**
+     * 
+     * @param categoria
+     *     The categoria
+     */
+    public void setCategoria(String categoria) {
+        this.categoria = categoria;
+    }
+
+    /**
+     * 
+     * @return
+     *     The nomCategoria
+     */
+    public String getNomCategoria() {
+        return nomCategoria;
+    }
+
+    /**
+     * 
+     * @param nomCategoria
+     *     The nom_categoria
+     */
+    public void setNomCategoria(String nomCategoria) {
+        this.nomCategoria = nomCategoria;
+    }
+
+    /**
+     * 
+     * @return
+     *     The diaJoc
+     */
+    public String getDiaJoc() {
+        return diaJoc;
+    }
+
+    /**
+     * 
+     * @param diaJoc
+     *     The dia_joc
+     */
+    public void setDiaJoc(String diaJoc) {
+        this.diaJoc = diaJoc;
+    }
+
+    /**
+     * 
+     * @return
+     *     The horaJoc
+     */
+    public String getHoraJoc() {
+        return horaJoc;
+    }
+
+    /**
+     * 
+     * @param horaJoc
+     *     The hora_joc
+     */
+    public void setHoraJoc(String horaJoc) {
+        this.horaJoc = horaJoc;
+    }
+
+    /**
+     * 
+     * @return
+     *     The colorSam
+     */
+    public String getColorSam() {
+        return colorSam;
+    }
+
+    /**
+     * 
+     * @param colorSam
+     *     The color_sam
+     */
+    public void setColorSam(String colorSam) {
+        this.colorSam = colorSam;
+    }
+
+    /**
+     * 
+     * @return
+     *     The colorPan
+     */
+    public String getColorPan() {
+        return colorPan;
+    }
+
+    /**
+     * 
+     * @param colorPan
+     *     The color_pan
+     */
+    public void setColorPan(String colorPan) {
+        this.colorPan = colorPan;
+    }
+
+    /**
+     * 
+     * @return
+     *     The equipSec
+     */
+    public Object getEquipSec() {
+        return equipSec;
+    }
+
+    /**
+     * 
+     * @param equipSec
+     *     The equip_sec
+     */
+    public void setEquipSec(Object equipSec) {
+        this.equipSec = equipSec;
+    }
+
 }

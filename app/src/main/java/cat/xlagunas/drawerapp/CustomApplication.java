@@ -24,7 +24,6 @@ public class CustomApplication extends Application {
 
     private void initApi() {
         RestAdapter restAdapter = new RestAdapter.Builder()
-                .setLogLevel(RestAdapter.LogLevel.FULL)
                 .setEndpoint(Constants.ENDPOINT)
                 .setRequestInterceptor(new BasicAuthInterceptor())
                 .build();

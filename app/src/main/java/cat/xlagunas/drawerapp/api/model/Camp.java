@@ -1,71 +1,192 @@
 
 package cat.xlagunas.drawerapp.api.model;
 
-import java.util.List;
+import com.google.gson.annotations.Expose;
+import com.google.gson.annotations.SerializedName;
 
-public class Camp{
-   	private String adresa;
-   	private String codipostal;
-   	private String estat;
-   	private String existeix_canvi;
-   	private String id_camp;
-   	private String latitud;
-   	private String longitud;
-   	private String nom;
-   	private String poblacio;
+public class Camp {
 
- 	public String getAdresa(){
-		return this.adresa;
-	}
-	public void setAdresa(String adresa){
-		this.adresa = adresa;
-	}
- 	public String getCodipostal(){
-		return this.codipostal;
-	}
-	public void setCodipostal(String codipostal){
-		this.codipostal = codipostal;
-	}
- 	public String getEstat(){
-		return this.estat;
-	}
-	public void setEstat(String estat){
-		this.estat = estat;
-	}
- 	public String getExisteix_canvi(){
-		return this.existeix_canvi;
-	}
-	public void setExisteix_canvi(String existeix_canvi){
-		this.existeix_canvi = existeix_canvi;
-	}
- 	public String getId_camp(){
-		return this.id_camp;
-	}
-	public void setId_camp(String id_camp){
-		this.id_camp = id_camp;
-	}
- 	public String getLatitud(){
-		return this.latitud;
-	}
-	public void setLatitud(String latitud){
-		this.latitud = latitud;
-	}
- 	public String getLongitud(){
-		return this.longitud;
-	}
-	public void setLongitud(String longitud){
-		this.longitud = longitud;
-	}
- 	public String getNom(){
-		return this.nom;
-	}
-	public void setNom(String nom){
-		this.nom = nom;
-	}
- 	public String getPoblacio(){
-		return this.poblacio;
-	}
-	public void setPoblacio(String poblacio){
-		this.poblacio = poblacio;
-	}
+    @SerializedName("id_camp")
+    @Expose
+    private String idCamp;
+    @Expose
+    private String nom;
+    @Expose
+    private String adresa;
+    @Expose
+    private String codipostal;
+    @Expose
+    private String poblacio;
+    @Expose
+    private String estat;
+    @SerializedName("existeix_canvi")
+    @Expose
+    private Object existeixCanvi;
+    @Expose
+    private Object latitud;
+    @Expose
+    private Object longitud;
+
+    /**
+     * 
+     * @return
+     *     The idCamp
+     */
+    public String getIdCamp() {
+        return idCamp;
+    }
+
+    /**
+     * 
+     * @param idCamp
+     *     The id_camp
+     */
+    public void setIdCamp(String idCamp) {
+        this.idCamp = idCamp;
+    }
+
+    /**
+     * 
+     * @return
+     *     The nom
+     */
+    public String getNom() {
+        return nom;
+    }
+
+    /**
+     * 
+     * @param nom
+     *     The nom
+     */
+    public void setNom(String nom) {
+        this.nom = nom;
+    }
+
+    /**
+     * 
+     * @return
+     *     The adresa
+     */
+    public String getAdresa() {
+        return adresa;
+    }
+
+    /**
+     * 
+     * @param adresa
+     *     The adresa
+     */
+    public void setAdresa(String adresa) {
+        this.adresa = adresa;
+    }
+
+    /**
+     * 
+     * @return
+     *     The codipostal
+     */
+    public String getCodipostal() {
+        return codipostal;
+    }
+
+    /**
+     * 
+     * @param codipostal
+     *     The codipostal
+     */
+    public void setCodipostal(String codipostal) {
+        this.codipostal = codipostal;
+    }
+
+    /**
+     * 
+     * @return
+     *     The poblacio
+     */
+    public String getPoblacio() {
+        return poblacio;
+    }
+
+    /**
+     * 
+     * @param poblacio
+     *     The poblacio
+     */
+    public void setPoblacio(String poblacio) {
+        this.poblacio = poblacio;
+    }
+
+    /**
+     * 
+     * @return
+     *     The estat
+     */
+    public String getEstat() {
+        return estat;
+    }
+
+    /**
+     * 
+     * @param estat
+     *     The estat
+     */
+    public void setEstat(String estat) {
+        this.estat = estat;
+    }
+
+    /**
+     * 
+     * @return
+     *     The existeixCanvi
+     */
+    public Object getExisteixCanvi() {
+        return existeixCanvi;
+    }
+
+    /**
+     * 
+     * @param existeixCanvi
+     *     The existeix_canvi
+     */
+    public void setExisteixCanvi(Object existeixCanvi) {
+        this.existeixCanvi = existeixCanvi;
+    }
+
+    /**
+     * 
+     * @return
+     *     The latitud
+     */
+    public Object getLatitud() {
+        return latitud;
+    }
+
+    /**
+     * 
+     * @param latitud
+     *     The latitud
+     */
+    public void setLatitud(Object latitud) {
+        this.latitud = latitud;
+    }
+
+    /**
+     * 
+     * @return
+     *     The longitud
+     */
+    public Object getLongitud() {
+        return longitud;
+    }
+
+    /**
+     * 
+     * @param longitud
+     *     The longitud
+     */
+    public void setLongitud(Object longitud) {
+        this.longitud = longitud;
+    }
+
 }

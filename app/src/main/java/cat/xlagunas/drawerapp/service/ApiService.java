@@ -10,30 +10,41 @@ import java.util.List;
 
 import cat.xlagunas.drawerapp.CustomApplication;
 import cat.xlagunas.drawerapp.api.ApiTest;
+import cat.xlagunas.drawerapp.api.model.Competicion;
+import cat.xlagunas.drawerapp.api.model.Results;
 import cat.xlagunas.drawerapp.api.model.Team;
 import cat.xlagunas.drawerapp.api.model.TeamCategory;
 import cat.xlagunas.drawerapp.api.model.TeamDetails;
 import cat.xlagunas.drawerapp.util.event.TeamDetailsEvent;
 import de.greenrobot.event.EventBus;
 
-public class TeamService extends IntentService {
+public class ApiService extends IntentService {
 
-    private final static String TAG = TeamService.class.getSimpleName();
+    private final static String TAG = ApiService.class.getSimpleName();
     private static final String ACTION_TEAM = "cat.xlagunas.drawerapp.service.ACTION_TEAM";
+    private static final String ACTION_LEAGUE = "cat.xlagunas.drawerapp.service.ACTION_LEAGUE";
 
     private static String  EXTRA_TEAM_CATEGORY = "teamCategory";
+    private static String  EXTRA_COMPETITION = "competition";
     private ApiTest mApiTest;
 
     public static void getTeams(Context context, TeamCategory mTeamCategory) {
-        Intent intent = new Intent(context, TeamService.class);
+        Intent intent = new Intent(context, ApiService.class);
         intent.setAction(ACTION_TEAM);
         intent.putExtra(EXTRA_TEAM_CATEGORY, mTeamCategory);
         context.startService(intent);
     }
 
+    public static void getCompetition(Context context, Competicion mCompetition) {
+        Intent intent = new Intent(context, ApiService.class);
+        intent.setAction(ACTION_LEAGUE);
+        intent.putExtra(EXTRA_COMPETITION, mCompetition);
+        context.startService(intent);
+    }
 
-    public TeamService() {
-        super("TeamService");
+
+    public ApiService() {
+        super("ApiService");
     }
 
     @Override
@@ -49,8 +60,29 @@ public class TeamService extends IntentService {
             if (ACTION_TEAM.equals(action)) {
                 final TeamCategory teamCategory = intent.getParcelableExtra(EXTRA_TEAM_CATEGORY);
                 parseTeamsFromCategory(teamCategory);
+            } else if (ACTION_LEAGUE.equals(action)) {
+                final Competicion competition = intent.getParcelableExtra(EXTRA_COMPETITION);
+                parseCompetition(competition);
             }
         }
+    }
+
+    private void parseCompetition(Competicion competition) {
+        List<Integer> numRounds = mApiTest.getMaximumRounds(competition.getTerritorial(),
+                competition.getCodiCategoria(),competition.getCodiCompeticio(), competition.getNumGrup());
+
+        if (numRounds != null && numRounds.size() > 0) {
+            Log.d(TAG, "Total rounds on the competition: " + numRounds.get(0));
+            Results results = mApiTest.getLastWeekResults(competition.getTerritorial(),
+                    competition.getCodiCategoria(),competition.getCodiCompeticio(), competition.getNumGrup());
+
+            Log.d(TAG, "Category Results: " + results.toString());
+
+            //TODO: Save in database the current week, name of the team and lastResults
+        } else {
+            Log.e(TAG, "error obtaining total rounds for the competition, won't go further");
+        }
+
     }
 
     /**

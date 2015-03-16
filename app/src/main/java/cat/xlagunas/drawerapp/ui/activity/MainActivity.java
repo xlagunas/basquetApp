@@ -67,30 +67,7 @@ public class MainActivity extends ActionBarActivity implements NavigationDrawerF
     }
 
     private void initResultCalls(){
-        AppObservable.bindFragment(this, apiTest.getMaximumRounds());
 
-        apiTest
-                .getMaximumRounds()
-                .flatMap(new Func1<List<Integer>, Observable<Results>>() {
-                    @Override
-                    public Observable<Results> call(List<Integer> integers) {
-                        mTotalPages = integers != null && integers.size() > 0 ? integers.get(0) : 0;
-                        return apiTest.getLastWeekResults();
-                    }
-                })
-                .subscribeOn(Schedulers.from(AsyncTask.THREAD_POOL_EXECUTOR))
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Action1<Results>() {
-                    @Override
-                    public void call(Results results) {
-                        Log.i(TAG, "SUCCESS " + results.toString());
-                    }
-                }, new Action1<Throwable>() {
-                    @Override
-                    public void call(Throwable throwable) {
-                        Log.e(TAG, "Error", throwable);
-                    }
-                });
     }
 
     @Override
