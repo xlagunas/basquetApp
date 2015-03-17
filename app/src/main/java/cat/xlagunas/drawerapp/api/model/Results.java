@@ -13,36 +13,28 @@ public class Results {
     private List<Resultat> resultats = new ArrayList<Resultat>();
 
     /**
-     * 
-     * @return
-     *     The jornada
+     * @return The jornada
      */
     public String getJornada() {
         return jornada;
     }
 
     /**
-     * 
-     * @param jornada
-     *     The jornada
+     * @param jornada The jornada
      */
     public void setJornada(String jornada) {
         this.jornada = jornada;
     }
 
     /**
-     * 
-     * @return
-     *     The resultats
+     * @return The resultats
      */
     public List<Resultat> getResultats() {
         return resultats;
     }
 
     /**
-     * 
-     * @param resultats
-     *     The resultats
+     * @param resultats The resultats
      */
     public void setResultats(List<Resultat> resultats) {
         this.resultats = resultats;

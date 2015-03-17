@@ -32,6 +32,11 @@
             android:name=".service.ApiService"
             android:exported="false" >
         </service>
+
+        <activity
+            android:name=".ui.activity.CompetitionActivity"
+            android:label="@string/title_activity_competition" >
+        </activity>
     </application>
 
 </manifest>

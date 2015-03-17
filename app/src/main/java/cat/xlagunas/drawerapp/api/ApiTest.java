@@ -3,9 +3,11 @@ package cat.xlagunas.drawerapp.api;
 import java.util.List;
 
 import cat.xlagunas.drawerapp.api.model.ClubBasic;
+import cat.xlagunas.drawerapp.api.model.Resultat;
 import cat.xlagunas.drawerapp.api.model.Results;
 import cat.xlagunas.drawerapp.api.model.Team;
 import cat.xlagunas.drawerapp.api.model.TeamDetails;
+import retrofit.Callback;
 import retrofit.http.GET;
 import retrofit.http.Path;
 import rx.Observable;
@@ -20,6 +22,13 @@ public interface ApiTest {
                                       @Path("categoryId") String categoryId,
                                       @Path("competitionId") String competitionId,
                                       @Path("groupId") String groupId);
+
+    @GET("/resultats/get_resultats_jornada/{RegionId}/{categoryId}/{competitionId}/{groupId}/{weekId}")
+    public void getWeekResultsByWeekNumber(@Path("RegionId") String RegionId,
+                                      @Path("categoryId") String categoryId,
+                                      @Path("competitionId") String competitionId,
+                                      @Path("groupId") String groupId,
+                                      @Path("weekId") int weekNumber, Callback< List<Resultat> > callback);
 
     @GET("/competicions/get_jornada_maxima_per_competicio/{RegionId}/{categoryId}/{competitionId}/{groupId}")
     public List<Integer> getMaximumRounds(@Path("RegionId") String RegionId,

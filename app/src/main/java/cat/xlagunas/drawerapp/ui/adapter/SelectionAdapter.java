@@ -11,8 +11,10 @@ import java.util.List;
 
 import cat.xlagunas.drawerapp.R;
 import cat.xlagunas.drawerapp.api.model.BasicEntity;
+import cat.xlagunas.drawerapp.api.model.Results;
 import cat.xlagunas.drawerapp.holder.ClubSelectionViewHolder;
 import cat.xlagunas.drawerapp.holder.NoElementsViewHolder;
+import cat.xlagunas.drawerapp.holder.ResultSelectionViewHolder;
 import cat.xlagunas.drawerapp.holder.TeamSelectionViewHolder;
 import cat.xlagunas.drawerapp.util.TextFilter;
 
@@ -61,6 +63,11 @@ public class SelectionAdapter extends RecyclerView.Adapter implements Filterable
                 //TODO Change to the new view holder
                 holder = new TeamSelectionViewHolder(v);
                 break;
+            case BasicEntity.RESULT_ENTITY:
+                v = LayoutInflater.from(parent.getContext()).inflate(R.layout.match_item, parent, false);
+                holder = new ResultSelectionViewHolder(v);
+
+                break;
         }
 
         return holder;
@@ -77,6 +84,9 @@ public class SelectionAdapter extends RecyclerView.Adapter implements Filterable
                     break;
                 case BasicEntity.TEAM_ENTITY:
                     TeamSelectionViewHolder.onBindViewHolder(holder, entity);
+                    break;
+                case BasicEntity.RESULT_ENTITY:
+                    ResultSelectionViewHolder.onBindViewHolder(holder, entity);
                     break;
             }
             holder.itemView.setOnClickListener(new View.OnClickListener() {

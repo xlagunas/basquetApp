@@ -15,6 +15,7 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
 
 import java.util.List;
 
@@ -48,6 +49,7 @@ public class FavoriteSelectionFragment extends Fragment {
 
     private RecyclerView mRecyclerView;
     private SelectionAdapter mAdapter;
+    private ProgressBar mProgressBar;
 
     public static FavoriteSelectionFragment findClubs() {
         FavoriteSelectionFragment fragment = new FavoriteSelectionFragment();
@@ -88,7 +90,8 @@ public class FavoriteSelectionFragment extends Fragment {
                              Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_favorite_selection, container, false);
         mRecyclerView = (RecyclerView) v.findViewById(android.R.id.list);
-
+        mProgressBar = (ProgressBar) v.findViewById(R.id.progress_bar);
+        mRecyclerView.setVisibility(View.GONE);
         setHasOptionsMenu(true);
 
         return v;
@@ -130,6 +133,7 @@ public class FavoriteSelectionFragment extends Fragment {
                         });
                         mRecyclerView.setAdapter(mAdapter);
                         mAdapter.notifyDataSetChanged();
+                        enableRecyclerView();
                     }
                 }, new Action1<Throwable>() {
                     @Override
@@ -160,6 +164,7 @@ public class FavoriteSelectionFragment extends Fragment {
                         });
                         mRecyclerView.setAdapter(mAdapter);
                         mAdapter.notifyDataSetChanged();
+                        enableRecyclerView();
                     }
                 }, new Action1<Throwable>() {
                     @Override
@@ -233,6 +238,11 @@ public class FavoriteSelectionFragment extends Fragment {
         });
 
         super.onCreateOptionsMenu(menu,inflater);
+    }
+
+    private void enableRecyclerView() {
+        mProgressBar.setVisibility(View.GONE);
+        mRecyclerView.setVisibility(View.VISIBLE);
     }
 
 }

@@ -17,6 +17,7 @@ import cat.xlagunas.drawerapp.api.model.Competicion;
 import cat.xlagunas.drawerapp.api.model.TeamCategory;
 import cat.xlagunas.drawerapp.api.model.TeamDetails;
 import cat.xlagunas.drawerapp.service.ApiService;
+import cat.xlagunas.drawerapp.ui.activity.CompetitionActivity;
 import cat.xlagunas.drawerapp.util.event.TeamDetailsEvent;
 
 public class TeamSelectionFragment extends BusFragment {
@@ -85,7 +86,7 @@ public class TeamSelectionFragment extends BusFragment {
                 for (Competicion competicion : teamDetails.getCompeticions()) {
                     ViewGroup container = (ViewGroup) v.findViewById(R.id.category_name_container);
                     View competitionView = mInflater.inflate(R.layout.team_competition_item, container, false);
-                    fillCompetitionView(competitionView, competicion);
+                    fillCompetitionView(competitionView, competicion, teamDetails);
                     container.addView(competitionView);
                 }
 
@@ -107,13 +108,16 @@ public class TeamSelectionFragment extends BusFragment {
         dateTextView.setText(details.getEquip().getHoraJoc());
     }
 
-    private void fillCompetitionView(View view, final Competicion competicio) {
+    private void fillCompetitionView(View view, final Competicion competicio, final TeamDetails teamDetails) {
         Button button = (Button) view.findViewById(R.id.category_selection_btn);
         button.setText(competicio.getNomCompeticio());
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ApiService.getCompetition(getActivity(), competicio);
+                ApiService.getCompetition(getActivity(), competicio, teamDetails);
+
+                startActivity(CompetitionActivity.makeIntent(getActivity(), competicio));
+                getActivity().finish();
             }
         });
     }

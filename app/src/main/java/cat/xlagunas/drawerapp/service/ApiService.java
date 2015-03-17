@@ -24,8 +24,10 @@ public class ApiService extends IntentService {
     private static final String ACTION_TEAM = "cat.xlagunas.drawerapp.service.ACTION_TEAM";
     private static final String ACTION_LEAGUE = "cat.xlagunas.drawerapp.service.ACTION_LEAGUE";
 
-    private static String  EXTRA_TEAM_CATEGORY = "teamCategory";
-    private static String  EXTRA_COMPETITION = "competition";
+    private static final String EXTRA_TEAM_DETAILS = "teamDetails";
+    private static final String  EXTRA_TEAM_CATEGORY = "teamCategory";
+    private static final String  EXTRA_COMPETITION = "competition";
+
     private ApiTest mApiTest;
 
     public static void getTeams(Context context, TeamCategory mTeamCategory) {
@@ -35,10 +37,11 @@ public class ApiService extends IntentService {
         context.startService(intent);
     }
 
-    public static void getCompetition(Context context, Competicion mCompetition) {
+    public static void getCompetition(Context context, Competicion mCompetition, TeamDetails mTeamDetails) {
         Intent intent = new Intent(context, ApiService.class);
         intent.setAction(ACTION_LEAGUE);
         intent.putExtra(EXTRA_COMPETITION, mCompetition);
+        intent.putExtra(EXTRA_TEAM_DETAILS, mTeamDetails);
         context.startService(intent);
     }
 
@@ -62,12 +65,13 @@ public class ApiService extends IntentService {
                 parseTeamsFromCategory(teamCategory);
             } else if (ACTION_LEAGUE.equals(action)) {
                 final Competicion competition = intent.getParcelableExtra(EXTRA_COMPETITION);
-                parseCompetition(competition);
+                final TeamDetails teamDetails = (TeamDetails) intent.getSerializableExtra(EXTRA_TEAM_DETAILS);
+                parseCompetition(competition, teamDetails);
             }
         }
     }
 
-    private void parseCompetition(Competicion competition) {
+    private void parseCompetition(Competicion competition, TeamDetails details) {
         List<Integer> numRounds = mApiTest.getMaximumRounds(competition.getTerritorial(),
                 competition.getCodiCategoria(),competition.getCodiCompeticio(), competition.getNumGrup());
 
@@ -79,6 +83,7 @@ public class ApiService extends IntentService {
             Log.d(TAG, "Category Results: " + results.toString());
 
             //TODO: Save in database the current week, name of the team and lastResults
+
         } else {
             Log.e(TAG, "error obtaining total rounds for the competition, won't go further");
         }

@@ -4,7 +4,7 @@ package cat.xlagunas.drawerapp.api.model;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class Resultat {
+public class Resultat implements BasicEntity{
 
     @Expose
     private String id;
@@ -425,4 +425,18 @@ public class Resultat {
         this.isComunicadaAS = isComunicadaAS;
     }
 
+    @Override
+    public String getDisplayName() {
+        return "";
+    }
+
+    @Override
+    public String getKeyValue() {
+        return null;
+    }
+
+    @Override
+    public int getType() {
+        return RESULT_ENTITY;
+    }
 }
