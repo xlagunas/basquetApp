@@ -14,7 +14,7 @@ import cat.xlagunas.drawerapp.ui.fragment.ResultsFragment;
 
 public class CompetitionActivity extends ActionBarActivity {
     private final static String EXTRA_COMPETITITON = "competitition";
-    Competicion mCompetition;
+    private Competicion mCompetition;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

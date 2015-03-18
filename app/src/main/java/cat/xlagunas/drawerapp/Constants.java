@@ -8,4 +8,5 @@ public class Constants {
     public final static String PASSWORD = "fcbqprivat";
 
     public final static String ENDPOINT = "https://opendata.basquetcatala.cat";
+
 }

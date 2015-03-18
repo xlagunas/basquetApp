@@ -1,13 +1,14 @@
-
 package cat.xlagunas.drawerapp.api.model;
 
-import java.io.Serializable;
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import java.util.ArrayList;
 import java.util.List;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class TeamDetails implements Serializable{
+public class TeamDetails implements Parcelable {
 
     @Expose
     private Equip equip;
@@ -20,7 +21,7 @@ public class TeamDetails implements Serializable{
     private String idProximPartit;
 
     /**
-     * 
+     *
      * @return
      *     The equip
      */
@@ -29,7 +30,7 @@ public class TeamDetails implements Serializable{
     }
 
     /**
-     * 
+     *
      * @param equip
      *     The equip
      */
@@ -38,7 +39,7 @@ public class TeamDetails implements Serializable{
     }
 
     /**
-     * 
+     *
      * @return
      *     The camp
      */
@@ -47,7 +48,7 @@ public class TeamDetails implements Serializable{
     }
 
     /**
-     * 
+     *
      * @param camp
      *     The camp
      */
@@ -56,7 +57,7 @@ public class TeamDetails implements Serializable{
     }
 
     /**
-     * 
+     *
      * @return
      *     The competicions
      */
@@ -65,7 +66,7 @@ public class TeamDetails implements Serializable{
     }
 
     /**
-     * 
+     *
      * @param competicions
      *     The competicions
      */
@@ -74,7 +75,7 @@ public class TeamDetails implements Serializable{
     }
 
     /**
-     * 
+     *
      * @return
      *     The idProximPartit
      */
@@ -83,7 +84,7 @@ public class TeamDetails implements Serializable{
     }
 
     /**
-     * 
+     *
      * @param idProximPartit
      *     The id_proxim_partit
      */
@@ -91,4 +92,47 @@ public class TeamDetails implements Serializable{
         this.idProximPartit = idProximPartit;
     }
 
+
+    protected TeamDetails(Parcel in) {
+        equip = (Equip) in.readValue(Equip.class.getClassLoader());
+        camp = (Camp) in.readValue(Camp.class.getClassLoader());
+        if (in.readByte() == 0x01) {
+            competicions = new ArrayList<Competicion>();
+            in.readList(competicions, Competicion.class.getClassLoader());
+        } else {
+            competicions = null;
+        }
+        idProximPartit = in.readString();
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeValue(equip);
+        dest.writeValue(camp);
+        if (competicions == null) {
+            dest.writeByte((byte) (0x00));
+        } else {
+            dest.writeByte((byte) (0x01));
+            dest.writeList(competicions);
+        }
+        dest.writeString(idProximPartit);
+    }
+
+    @SuppressWarnings("unused")
+    public static final Parcelable.Creator<TeamDetails> CREATOR = new Parcelable.Creator<TeamDetails>() {
+        @Override
+        public TeamDetails createFromParcel(Parcel in) {
+            return new TeamDetails(in);
+        }
+
+        @Override
+        public TeamDetails[] newArray(int size) {
+            return new TeamDetails[size];
+        }
+    };
 }

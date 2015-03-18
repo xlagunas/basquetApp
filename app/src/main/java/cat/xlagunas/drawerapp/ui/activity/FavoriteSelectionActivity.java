@@ -7,15 +7,21 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import com.j256.ormlite.android.apptools.OpenHelperManager;
+
 import cat.xlagunas.drawerapp.R;
 import cat.xlagunas.drawerapp.api.model.BasicEntity;
 import cat.xlagunas.drawerapp.api.model.ClubBasic;
 import cat.xlagunas.drawerapp.api.model.TeamCategory;
+import cat.xlagunas.drawerapp.database.DatabaseHelper;
+import cat.xlagunas.drawerapp.ui.dialog.CategoryDialog;
 import cat.xlagunas.drawerapp.ui.fragment.FavoriteSelectionFragment;
 import cat.xlagunas.drawerapp.ui.fragment.OnFragmentInteractionListener;
 import cat.xlagunas.drawerapp.ui.fragment.TeamSelectionFragment;
 
-public class FavoriteSelectionActivity extends ActionBarActivity implements OnFragmentInteractionListener{
+public class FavoriteSelectionActivity extends ActionBarActivity implements Persistable, OnFragmentInteractionListener{
+
+    private DatabaseHelper databaseHelper = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,10 +69,31 @@ public class FavoriteSelectionActivity extends ActionBarActivity implements OnFr
 
     @Override
     public void onFragmentInteraction(BasicEntity entity) {
-        if (entity instanceof ClubBasic){
-            changeFragment(FavoriteSelectionFragment.findTeamsByClubId(((ClubBasic)entity).getCodi_club()));
-        } else if (entity instanceof TeamCategory) {
-            changeFragment(TeamSelectionFragment.newInstance((TeamCategory) entity));
+        CategoryDialog dialog = CategoryDialog.getClubCategories(((ClubBasic) entity).getCodi_club());
+        dialog.setCallback(new CategoryDialog.CategoryDialogCallback() {
+            @Override
+            public void OnTeamCategorySelected(TeamCategory team) {
+                changeFragment(TeamSelectionFragment.newInstance(team));
+            }
+        });
+
+        dialog.show(getSupportFragmentManager(), "Dialog");
+    }
+
+    public DatabaseHelper getHelper() {
+        if (databaseHelper == null) {
+            databaseHelper =
+                    OpenHelperManager.getHelper(this, DatabaseHelper.class);
+        }
+        return databaseHelper;
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        if (databaseHelper != null) {
+            OpenHelperManager.releaseHelper();
+            databaseHelper = null;
         }
     }
 }

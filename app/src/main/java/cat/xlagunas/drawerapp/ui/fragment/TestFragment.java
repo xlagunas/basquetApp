@@ -22,6 +22,7 @@ import cat.xlagunas.drawerapp.ui.adapter.SelectionAdapter;
 public class TestFragment extends Fragment implements View.OnClickListener{
 
     private RecyclerView mRecyclerView;
+    private LinearLayoutManager mLinearLayoutManager;
     private FloatingActionButton mActionButton;
     private OnFragmentInteractionListener mListener;
 
@@ -56,7 +57,8 @@ public class TestFragment extends Fragment implements View.OnClickListener{
                              Bundle savedInstanceState) {
         mRootView = inflater.inflate(R.layout.fragment_favorite_landing, container, false);
         mRecyclerView = (RecyclerView) mRootView.findViewById(android.R.id.list);
-        mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false));
+        mLinearLayoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
+        mRecyclerView.setLayoutManager(mLinearLayoutManager);
         mRootView.findViewById(R.id.fab).setOnClickListener(this);
         mActionButton = (FloatingActionButton) mRootView.findViewById(R.id.fab);
         mActionButton.attachToRecyclerView(mRecyclerView);

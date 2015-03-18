@@ -4,7 +4,9 @@ package cat.xlagunas.drawerapp.api.model;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class Camp {
+import java.io.Serializable;
+
+public class Camp implements Serializable {
 
     @SerializedName("id_camp")
     @Expose

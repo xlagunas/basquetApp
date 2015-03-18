@@ -3,6 +3,7 @@ package cat.xlagunas.drawerapp.ui.fragment;
 import android.app.Activity;
 import android.app.SearchManager;
 import android.content.Context;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -17,10 +18,15 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
 
+import java.sql.SQLException;
 import java.util.List;
 
 import cat.xlagunas.drawerapp.CustomApplication;
 import cat.xlagunas.drawerapp.R;
+import cat.xlagunas.drawerapp.database.Club;
+import cat.xlagunas.drawerapp.database.DatabaseHelper;
+import cat.xlagunas.drawerapp.database.EntityConverter;
+import cat.xlagunas.drawerapp.ui.activity.Persistable;
 import cat.xlagunas.drawerapp.ui.adapter.SelectionAdapter;
 import cat.xlagunas.drawerapp.api.ApiTest;
 import cat.xlagunas.drawerapp.api.model.BasicEntity;
@@ -40,6 +46,7 @@ public class FavoriteSelectionFragment extends Fragment {
 
     private static final String ARG_TYPE = "type";
     private static final String ARG_CLUB_ID = "club_id";
+    private DatabaseHelper mHelper;
     private ApiTest apiTest;
 
     private int mType;
@@ -50,6 +57,8 @@ public class FavoriteSelectionFragment extends Fragment {
     private RecyclerView mRecyclerView;
     private SelectionAdapter mAdapter;
     private ProgressBar mProgressBar;
+
+    private LinearLayoutManager mLinearLayout;
 
     public static FavoriteSelectionFragment findClubs() {
         FavoriteSelectionFragment fragment = new FavoriteSelectionFragment();
@@ -92,6 +101,8 @@ public class FavoriteSelectionFragment extends Fragment {
         mRecyclerView = (RecyclerView) v.findViewById(android.R.id.list);
         mProgressBar = (ProgressBar) v.findViewById(R.id.progress_bar);
         mRecyclerView.setVisibility(View.GONE);
+        mLinearLayout = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
+
         setHasOptionsMenu(true);
 
         return v;
@@ -101,7 +112,7 @@ public class FavoriteSelectionFragment extends Fragment {
     public void onResume() {
         super.onResume();
         if (mAdapter == null) {
-            mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false));
+            mRecyclerView.setLayoutManager(mLinearLayout);
             switch (mType) {
                 case TYPE_CLUB:
                     requestClubCall();
@@ -133,7 +144,7 @@ public class FavoriteSelectionFragment extends Fragment {
                         });
                         mRecyclerView.setAdapter(mAdapter);
                         mAdapter.notifyDataSetChanged();
-                        enableRecyclerView();
+                        showRecyclerView();
                     }
                 }, new Action1<Throwable>() {
                     @Override
@@ -145,33 +156,83 @@ public class FavoriteSelectionFragment extends Fragment {
     }
 
     private void requestClubCall() {
+        long totalClubs = getTotalClubs();
 
-        apiTest
-                .getClubsList()
-                .subscribeOn(Schedulers.from(AsyncTask.THREAD_POOL_EXECUTOR))
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Action1<List<ClubBasic>>() {
-                    @Override
-                    public void call(List<ClubBasic> teamList) {
-                        List<? extends BasicEntity> entities = teamList;
+        if (totalClubs > 0) {
+            Log.i(TAG, "Total clubs: " +totalClubs);
+            initClubView();
+        } else {
 
-                        mAdapter = new SelectionAdapter((List<BasicEntity>) entities, new SelectionAdapter.SelectionCallback() {
-                            @Override
-                            public void onItemSelected(BasicEntity entity) {
-                                Log.d(TAG, "Selected code: "+entity.getKeyValue());
-                                mListener.onFragmentInteraction((ClubBasic) entity);
-                            }
-                        });
-                        mRecyclerView.setAdapter(mAdapter);
-                        mAdapter.notifyDataSetChanged();
-                        enableRecyclerView();
-                    }
-                }, new Action1<Throwable>() {
-                    @Override
-                    public void call(Throwable throwable) {
-                        Log.e(TAG, "Error", throwable);
-                    }
-                });
+            apiTest
+                    .getClubsList()
+                    .subscribeOn(Schedulers.from(AsyncTask.THREAD_POOL_EXECUTOR))
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe(new Action1<List<ClubBasic>>() {
+                        @Override
+                        public void call(List<ClubBasic> teamList) {
+                            List<? extends BasicEntity> entities = teamList;
+                            persistClubBasicData(teamList);
+                            enableRecyclerView(teamList);
+                        }
+                    }, new Action1<Throwable>() {
+                        @Override
+                        public void call(Throwable throwable) {
+                            Log.e(TAG, "Error", throwable);
+                        }
+                    });
+        }
+    }
+
+    private void initClubView() {
+        try {
+            List<Club> clubList = mHelper.getClubDao().queryForAll();
+            List<? extends BasicEntity> clubBasicList = EntityConverter.convertFromClubListToClubBasicList(clubList);
+            enableRecyclerView(clubBasicList);
+        } catch (SQLException e) {
+            Log.e(TAG, "Error SQL initClubView", e);
+        }
+    }
+
+    private void enableRecyclerView(List<? extends BasicEntity> entities){
+        mAdapter = new SelectionAdapter((List<BasicEntity>) entities, new SelectionAdapter.SelectionCallback() {
+            @Override
+            public void onItemSelected(BasicEntity entity) {
+                Log.d(TAG, "Selected code: " + entity.getKeyValue());
+                mListener.onFragmentInteraction((ClubBasic) entity);
+            }
+        });
+        mRecyclerView.setAdapter(mAdapter);
+        mAdapter.notifyDataSetChanged();
+        showRecyclerView();
+    }
+    private void persistClubData(List<Club> clubList) {
+        final SQLiteDatabase db = mHelper.getWritableDatabase();
+        db.beginTransaction();
+        try{
+            for (int i=0; i<clubList.size(); i++) {
+                mHelper.getClubDao().create(clubList.get(i));
+            }
+            db.setTransactionSuccessful();
+        } catch (SQLException e) {
+            Log.e(TAG, "Error performing sql bulk insert", e);
+        }
+
+        finally {
+            db.endTransaction();
+        }
+    }
+    private void persistClubBasicData(List<ClubBasic> entities) {
+        List<Club> clubEntities = EntityConverter.convertFromClubBasicListToClubList(entities);
+        persistClubData(clubEntities);
+    }
+
+    private long getTotalClubs() {
+        try {
+            return mHelper.getClubDao().countOf();
+        } catch (SQLException e) {
+            Log.e(TAG, "SQL Exception", e);
+            return 0;
+        }
     }
 
     @Override
@@ -179,6 +240,7 @@ public class FavoriteSelectionFragment extends Fragment {
         super.onAttach(activity);
         try {
             mListener = (OnFragmentInteractionListener) activity;
+            mHelper = ((Persistable) activity).getHelper();
         } catch (ClassCastException e) {
             throw new ClassCastException(activity.toString()
                     + " must implement OnFragmentInteractionListener");
@@ -240,7 +302,7 @@ public class FavoriteSelectionFragment extends Fragment {
         super.onCreateOptionsMenu(menu,inflater);
     }
 
-    private void enableRecyclerView() {
+    private void showRecyclerView() {
         mProgressBar.setVisibility(View.GONE);
         mRecyclerView.setVisibility(View.VISIBLE);
     }

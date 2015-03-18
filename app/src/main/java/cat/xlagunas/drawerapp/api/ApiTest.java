@@ -42,6 +42,9 @@ public interface ApiTest {
     @GET("/equips/llistat_equips_club/{clubId}")
     public Observable<List<Team>> getTeamsByClubId(@Path("clubId") String clubId);
 
+    @GET("/equips/llistat_equips_club/{clubId}")
+    public void getTeamsByClubId(@Path("clubId") String clubId, Callback<List<Team>> callback);
+
     @GET("/equips/fitxa/{categoryId}/{teamId}")
     public TeamDetails getTeamDetails(@Path("categoryId")String categoryId, @Path("teamId") String teamId);
 

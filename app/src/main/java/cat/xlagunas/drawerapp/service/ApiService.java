@@ -5,6 +5,9 @@ import android.content.Intent;
 import android.content.Context;
 import android.util.Log;
 
+import com.j256.ormlite.android.apptools.OpenHelperManager;
+
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -15,6 +18,7 @@ import cat.xlagunas.drawerapp.api.model.Results;
 import cat.xlagunas.drawerapp.api.model.Team;
 import cat.xlagunas.drawerapp.api.model.TeamCategory;
 import cat.xlagunas.drawerapp.api.model.TeamDetails;
+import cat.xlagunas.drawerapp.database.DatabaseHelper;
 import cat.xlagunas.drawerapp.util.event.TeamDetailsEvent;
 import de.greenrobot.event.EventBus;
 
@@ -29,6 +33,15 @@ public class ApiService extends IntentService {
     private static final String  EXTRA_COMPETITION = "competition";
 
     private ApiTest mApiTest;
+    private DatabaseHelper databaseHelper = null;
+
+    private DatabaseHelper getHelper() {
+        if (databaseHelper == null) {
+            databaseHelper =
+                    OpenHelperManager.getHelper(this, DatabaseHelper.class);
+        }
+        return databaseHelper;
+    }
 
     public static void getTeams(Context context, TeamCategory mTeamCategory) {
         Intent intent = new Intent(context, ApiService.class);
@@ -65,7 +78,7 @@ public class ApiService extends IntentService {
                 parseTeamsFromCategory(teamCategory);
             } else if (ACTION_LEAGUE.equals(action)) {
                 final Competicion competition = intent.getParcelableExtra(EXTRA_COMPETITION);
-                final TeamDetails teamDetails = (TeamDetails) intent.getSerializableExtra(EXTRA_TEAM_DETAILS);
+                final TeamDetails teamDetails = intent.getParcelableExtra(EXTRA_TEAM_DETAILS);
                 parseCompetition(competition, teamDetails);
             }
         }
@@ -107,6 +120,16 @@ public class ApiService extends IntentService {
         Log.i(TAG, "Finished requesting data in "+ (System.currentTimeMillis() - requestTime) +" ms");
 
         EventBus.getDefault().post(new TeamDetailsEvent(teamDetails));
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        Log.d(TAG, "Destroying openHelper from intentService");
+        if (databaseHelper != null) {
+            OpenHelperManager.releaseHelper();
+            databaseHelper = null;
+        }
     }
 
 

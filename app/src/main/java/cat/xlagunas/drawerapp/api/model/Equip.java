@@ -1,10 +1,14 @@
-
 package cat.xlagunas.drawerapp.api.model;
+
+import android.os.Parcel;
+import android.os.Parcelable;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class Equip {
+import java.io.Serializable;
+
+public class Equip implements Parcelable {
 
     @SerializedName("id_club")
     @Expose
@@ -38,7 +42,7 @@ public class Equip {
     private Object equipSec;
 
     /**
-     * 
+     *
      * @return
      *     The idClub
      */
@@ -47,7 +51,7 @@ public class Equip {
     }
 
     /**
-     * 
+     *
      * @param idClub
      *     The id_club
      */
@@ -56,7 +60,7 @@ public class Equip {
     }
 
     /**
-     * 
+     *
      * @return
      *     The nom
      */
@@ -65,7 +69,7 @@ public class Equip {
     }
 
     /**
-     * 
+     *
      * @param nom
      *     The nom
      */
@@ -74,7 +78,7 @@ public class Equip {
     }
 
     /**
-     * 
+     *
      * @return
      *     The idEquip
      */
@@ -83,7 +87,7 @@ public class Equip {
     }
 
     /**
-     * 
+     *
      * @param idEquip
      *     The id_equip
      */
@@ -92,7 +96,7 @@ public class Equip {
     }
 
     /**
-     * 
+     *
      * @return
      *     The foto
      */
@@ -101,7 +105,7 @@ public class Equip {
     }
 
     /**
-     * 
+     *
      * @param foto
      *     The foto
      */
@@ -110,7 +114,7 @@ public class Equip {
     }
 
     /**
-     * 
+     *
      * @return
      *     The categoria
      */
@@ -119,7 +123,7 @@ public class Equip {
     }
 
     /**
-     * 
+     *
      * @param categoria
      *     The categoria
      */
@@ -128,7 +132,7 @@ public class Equip {
     }
 
     /**
-     * 
+     *
      * @return
      *     The nomCategoria
      */
@@ -137,7 +141,7 @@ public class Equip {
     }
 
     /**
-     * 
+     *
      * @param nomCategoria
      *     The nom_categoria
      */
@@ -146,7 +150,7 @@ public class Equip {
     }
 
     /**
-     * 
+     *
      * @return
      *     The diaJoc
      */
@@ -155,7 +159,7 @@ public class Equip {
     }
 
     /**
-     * 
+     *
      * @param diaJoc
      *     The dia_joc
      */
@@ -164,7 +168,7 @@ public class Equip {
     }
 
     /**
-     * 
+     *
      * @return
      *     The horaJoc
      */
@@ -173,7 +177,7 @@ public class Equip {
     }
 
     /**
-     * 
+     *
      * @param horaJoc
      *     The hora_joc
      */
@@ -182,7 +186,7 @@ public class Equip {
     }
 
     /**
-     * 
+     *
      * @return
      *     The colorSam
      */
@@ -191,7 +195,7 @@ public class Equip {
     }
 
     /**
-     * 
+     *
      * @param colorSam
      *     The color_sam
      */
@@ -200,7 +204,7 @@ public class Equip {
     }
 
     /**
-     * 
+     *
      * @return
      *     The colorPan
      */
@@ -209,7 +213,7 @@ public class Equip {
     }
 
     /**
-     * 
+     *
      * @param colorPan
      *     The color_pan
      */
@@ -218,7 +222,7 @@ public class Equip {
     }
 
     /**
-     * 
+     *
      * @return
      *     The equipSec
      */
@@ -227,7 +231,7 @@ public class Equip {
     }
 
     /**
-     * 
+     *
      * @param equipSec
      *     The equip_sec
      */
@@ -235,4 +239,51 @@ public class Equip {
         this.equipSec = equipSec;
     }
 
+
+    protected Equip(Parcel in) {
+        idClub = in.readString();
+        nom = in.readString();
+        idEquip = in.readString();
+        foto = (Object) in.readValue(Object.class.getClassLoader());
+        categoria = in.readString();
+        nomCategoria = in.readString();
+        diaJoc = in.readString();
+        horaJoc = in.readString();
+        colorSam = in.readString();
+        colorPan = in.readString();
+        equipSec = (Object) in.readValue(Object.class.getClassLoader());
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(idClub);
+        dest.writeString(nom);
+        dest.writeString(idEquip);
+        dest.writeValue(foto);
+        dest.writeString(categoria);
+        dest.writeString(nomCategoria);
+        dest.writeString(diaJoc);
+        dest.writeString(horaJoc);
+        dest.writeString(colorSam);
+        dest.writeString(colorPan);
+        dest.writeValue(equipSec);
+    }
+
+    @SuppressWarnings("unused")
+    public static final Parcelable.Creator<Equip> CREATOR = new Parcelable.Creator<Equip>() {
+        @Override
+        public Equip createFromParcel(Parcel in) {
+            return new Equip(in);
+        }
+
+        @Override
+        public Equip[] newArray(int size) {
+            return new Equip[size];
+        }
+    };
 }

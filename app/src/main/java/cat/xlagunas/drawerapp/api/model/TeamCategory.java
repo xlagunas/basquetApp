@@ -128,4 +128,9 @@ public class TeamCategory implements BasicEntity, Parcelable {
             return new TeamCategory[size];
         }
     };
+
+    @Override
+    public String toString() {
+        return getCategoryName().toUpperCase();
+    }
 }

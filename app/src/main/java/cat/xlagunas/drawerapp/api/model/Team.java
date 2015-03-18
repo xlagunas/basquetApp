@@ -162,4 +162,9 @@ public class Team implements BasicEntity, Parcelable{
             return new Team[size];
         }
     };
+
+    @Override
+    public String toString() {
+        return getNomCategoria().toUpperCase();
+    }
 }
