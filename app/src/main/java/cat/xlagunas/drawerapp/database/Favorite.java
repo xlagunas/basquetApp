@@ -19,26 +19,36 @@ public class Favorite {
     public final static String FAVORITE_CURRENT_ROUND = "current_round";
     public final static String FAVORITE_CATEGORY_NAME = "category_name";
     public final static String FAVORITE_REGION_ID = "region_id";
+    public final static String FAVORITE_CLUB_ID = "club_id";
 
-    @DatabaseField(id = true, columnName = FAVORITE_ID)
+    @DatabaseField(generatedId = true, columnName = FAVORITE_ID)
     private int favoriteId;
+
     @DatabaseField(canBeNull = false, columnName = FAVORITE_TEAM_ID)
     private String teamId;
+
     @DatabaseField(canBeNull = false, columnName = FAVORITE_CATEGORY_ID)
     private String categoryId;
+
     @DatabaseField(canBeNull = false, columnName = FAVORITE_GROUP_ID)
     private String groupId;
+
     @DatabaseField(canBeNull = false, columnName = FAVORITE_REGION_ID)
     private String regionId;
+
     @DatabaseField(canBeNull = false, columnName = FAVORITE_MAX_ROUNDS)
     private int maxRounds;
+
     @DatabaseField(canBeNull = false, columnName = FAVORITE_CURRENT_ROUND)
     private int currentRound;
+
     @DatabaseField(canBeNull = false, columnName = FAVORITE_TEAM_NAME)
     private String teamName;
+
     @DatabaseField(canBeNull = false, columnName = FAVORITE_CATEGORY_NAME)
     private String categoryName;
-    @DatabaseField(canBeNull = false, foreign = true)
+
+    @DatabaseField(canBeNull = false, foreign = true, columnName = FAVORITE_CLUB_ID)
     private Club club;
 
     public Favorite() {

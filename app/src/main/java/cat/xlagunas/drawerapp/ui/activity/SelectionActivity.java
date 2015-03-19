@@ -7,14 +7,19 @@ import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.Toolbar;
 
+import com.j256.ormlite.android.apptools.OpenHelperManager;
+
 import cat.xlagunas.drawerapp.R;
+import cat.xlagunas.drawerapp.database.DatabaseHelper;
 import cat.xlagunas.drawerapp.ui.fragment.TestFragment.OnFragmentInteractionListener;
 import cat.xlagunas.drawerapp.ui.fragment.TestFragment;
 
 /**
  * Created by xlagunas on 08/03/15.
  */
-public class SelectionActivity extends ActionBarActivity implements OnFragmentInteractionListener {
+public class SelectionActivity extends ActionBarActivity implements OnFragmentInteractionListener, Persistable {
+
+    private DatabaseHelper databaseHelper = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,4 +60,12 @@ public class SelectionActivity extends ActionBarActivity implements OnFragmentIn
     }
 
 
+    @Override
+    public DatabaseHelper getHelper() {
+        if (databaseHelper == null) {
+            databaseHelper =
+                    OpenHelperManager.getHelper(this, DatabaseHelper.class);
+        }
+        return databaseHelper;
+    }
 }

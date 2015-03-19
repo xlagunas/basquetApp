@@ -3,11 +3,13 @@ package cat.xlagunas.drawerapp.service;
 import android.app.IntentService;
 import android.content.Intent;
 import android.content.Context;
+import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
 import com.j256.ormlite.android.apptools.OpenHelperManager;
 
 import java.io.Serializable;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -18,7 +20,10 @@ import cat.xlagunas.drawerapp.api.model.Results;
 import cat.xlagunas.drawerapp.api.model.Team;
 import cat.xlagunas.drawerapp.api.model.TeamCategory;
 import cat.xlagunas.drawerapp.api.model.TeamDetails;
+import cat.xlagunas.drawerapp.database.Club;
 import cat.xlagunas.drawerapp.database.DatabaseHelper;
+import cat.xlagunas.drawerapp.database.EntityConverter;
+import cat.xlagunas.drawerapp.database.Favorite;
 import cat.xlagunas.drawerapp.util.event.TeamDetailsEvent;
 import de.greenrobot.event.EventBus;
 
@@ -96,6 +101,11 @@ public class ApiService extends IntentService {
             Log.d(TAG, "Category Results: " + results.toString());
 
             //TODO: Save in database the current week, name of the team and lastResults
+            Favorite favorite = EntityConverter.convertFavoriteFromModels(competition, details);
+            favorite.setMaxRounds(numRounds.get(0));
+            favorite.setCurrentRound(Integer.parseInt(results.getJornada()));
+
+            saveFavorite(favorite, details.getEquip().getIdClub());
 
         } else {
             Log.e(TAG, "error obtaining total rounds for the competition, won't go further");
@@ -103,10 +113,27 @@ public class ApiService extends IntentService {
 
     }
 
-    /**
-     * Handle action Foo in the provided background thread with the provided
-     * parameters.
-     */
+    private void saveFavorite(Favorite favorite, String idClub) {
+        final SQLiteDatabase db = getHelper().getWritableDatabase();
+        db.beginTransaction();
+        try{
+            Club club = getHelper().getClubDao().queryForId(idClub);
+            if (club != null) {
+                favorite.setClub(club);
+                getHelper().getFavoriteDao().create(favorite);
+            } else {
+                Log.e(TAG, "Error reading club from DB, can't create favorite");
+            }
+            db.setTransactionSuccessful();
+        } catch (SQLException e) {
+            Log.e(TAG, "Error performing sql bulk insert", e);
+        }
+
+        finally {
+            db.endTransaction();
+        }
+    }
+
     private void parseTeamsFromCategory(TeamCategory teamCategory) {
         long requestTime;
         Log.i(TAG, "Requesting data for teams");

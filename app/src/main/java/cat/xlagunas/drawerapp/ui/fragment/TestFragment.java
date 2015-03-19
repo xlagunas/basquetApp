@@ -13,10 +13,18 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.TranslateAnimation;
 
+import com.j256.ormlite.stmt.QueryBuilder;
 import com.melnykov.fab.FloatingActionButton;
+
+import java.sql.SQLException;
+import java.util.List;
 
 import cat.xlagunas.drawerapp.CustomApplication;
 import cat.xlagunas.drawerapp.R;
+import cat.xlagunas.drawerapp.database.Club;
+import cat.xlagunas.drawerapp.database.DatabaseHelper;
+import cat.xlagunas.drawerapp.database.Favorite;
+import cat.xlagunas.drawerapp.ui.activity.Persistable;
 import cat.xlagunas.drawerapp.ui.adapter.SelectionAdapter;
 
 public class TestFragment extends Fragment implements View.OnClickListener{
@@ -35,6 +43,10 @@ public class TestFragment extends Fragment implements View.OnClickListener{
     private View mRootView;
     private int mTotalPages;
     private Context mContext;
+    private List<Favorite> mFavorites;
+
+    private DatabaseHelper mHelper;
+
 
 
     /**
@@ -70,13 +82,30 @@ public class TestFragment extends Fragment implements View.OnClickListener{
     public void onResume() {
         super.onResume();
         animateView();
-
-        mRecyclerView.setAdapter(new SelectionAdapter());
-
-        mRecyclerView.getAdapter().notifyDataSetChanged();
+        getFavoriteList();
+        if (mFavorites != null && mFavorites.size() > 0) {
+            Log.i(TAG, "Favorites found: "+mFavorites.size());
+        }
+        else {
+            mRecyclerView.setAdapter(new SelectionAdapter());
+            mRecyclerView.getAdapter().notifyDataSetChanged();
+        }
 
     }
 
+    private void getFavoriteList(){
+        try {
+            QueryBuilder<Favorite, Integer> mBuilder = mHelper.getFavoriteDao().queryBuilder();
+            QueryBuilder<Club, String> mLeftJoin = mHelper.getClubDao().queryBuilder().leftJoin(mBuilder);
+            Log.d(TAG, mLeftJoin.prepareStatementString());
+            mBuilder.groupBy(Favorite.FAVORITE_CLUB_ID);
+            Log.d(TAG, mBuilder.prepareStatementString());
+            mBuilder.query();
+            mFavorites = mHelper.getFavoriteDao().queryForAll();
+        } catch (SQLException e) {
+            Log.e(TAG, "Error getting favorites", e);
+        }
+    }
 
 
     public void animateView(){
@@ -104,11 +133,11 @@ public class TestFragment extends Fragment implements View.OnClickListener{
         super.onAttach(activity);
         try {
             mListener = (OnFragmentInteractionListener) activity;
+            mHelper = ((Persistable) activity).getHelper();
         } catch (ClassCastException e) {
             throw new ClassCastException(activity.toString()
                     + " must implement OnFragmentInteractionListener");
         }
-
     }
 
     @Override

@@ -1,5 +1,5 @@
 #
-# generated on 2015/03/18 12:46:27
+# generated on 2015/03/19 01:28:37
 #
 # --table-start--
 dataClass=cat.xlagunas.drawerapp.database.Club
@@ -26,6 +26,7 @@ tableName=favorite
 fieldName=favoriteId
 columnName=favorite_id
 id=true
+generatedId=true
 # --field-end--
 # --field-start--
 fieldName=teamId

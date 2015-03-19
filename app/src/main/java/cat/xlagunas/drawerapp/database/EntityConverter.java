@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import cat.xlagunas.drawerapp.api.model.ClubBasic;
+import cat.xlagunas.drawerapp.api.model.Competicion;
+import cat.xlagunas.drawerapp.api.model.TeamDetails;
 
 /**
  * Created by xlagunas on 18/03/15.
@@ -39,5 +41,16 @@ public class EntityConverter {
         }
 
         return clubBasicList;
+    }
+
+    public static Favorite convertFavoriteFromModels(Competicion competition, TeamDetails details){
+        Favorite favorite = new Favorite();
+        favorite.setCategoryId(competition.getCodiCategoria());
+        favorite.setCategoryName(competition.getNomCompeticio());
+        favorite.setGroupId(competition.getNumGrup());
+        favorite.setTeamName(details.getEquip().getNom());
+        favorite.setTeamId(details.getEquip().getIdEquip());
+        favorite.setRegionId(competition.getTerritorial());
+        return favorite;
     }
 }
