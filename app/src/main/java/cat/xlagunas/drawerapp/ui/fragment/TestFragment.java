@@ -119,6 +119,7 @@ public class TestFragment extends Fragment implements View.OnClickListener{
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         Log.d(TAG, "Call onActivityCreated");
+        //TODO HE MOGUT AIXO DEL ONRESUME AL ONACTIVITYCREATED
         mClubs = ClubHelper.getFavoritedClubs(mHelper);
 
 
