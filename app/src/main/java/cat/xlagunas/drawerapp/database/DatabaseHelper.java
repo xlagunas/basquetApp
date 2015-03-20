@@ -21,7 +21,7 @@ public class DatabaseHelper extends OrmLiteSqliteOpenHelper {
     private final String TAG = DatabaseHelper.class.getSimpleName();
 
     private static final String DATABASE_NAME = "basquetApp.db";
-    private static final int DATABASE_VERSION = 2;
+    private static final int DATABASE_VERSION = 5;
 
     private Dao<Club, String> clubDao;
     private Dao<Favorite, Integer> favoriteDao;

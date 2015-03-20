@@ -1,5 +1,5 @@
 #
-# generated on 2015/03/19 01:28:37
+# generated on 2015/03/20 12:06:42
 #
 # --table-start--
 dataClass=cat.xlagunas.drawerapp.database.Club
@@ -15,6 +15,12 @@ fieldName=name
 columnName=club_name
 canBeNull=false
 # --field-end--
+# --field-start--
+fieldName=favorites
+columnName=club_favorite_id
+foreignCollection=true
+foreignCollectionColumnName=club_favorite_id
+# --field-end--
 # --table-fields-end--
 # --table-end--
 #################################
@@ -25,7 +31,6 @@ tableName=favorite
 # --field-start--
 fieldName=favoriteId
 columnName=favorite_id
-id=true
 generatedId=true
 # --field-end--
 # --field-start--
@@ -67,11 +72,6 @@ canBeNull=false
 fieldName=categoryName
 columnName=category_name
 canBeNull=false
-# --field-end--
-# --field-start--
-fieldName=club
-canBeNull=false
-foreign=true
 # --field-end--
 # --table-fields-end--
 # --table-end--

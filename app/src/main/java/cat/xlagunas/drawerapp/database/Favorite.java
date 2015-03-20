@@ -48,7 +48,7 @@ public class Favorite {
     @DatabaseField(canBeNull = false, columnName = FAVORITE_CATEGORY_NAME)
     private String categoryName;
 
-    @DatabaseField(canBeNull = false, foreign = true, columnName = FAVORITE_CLUB_ID)
+    @DatabaseField(foreign = true, canBeNull = false)
     private Club club;
 
     public Favorite() {

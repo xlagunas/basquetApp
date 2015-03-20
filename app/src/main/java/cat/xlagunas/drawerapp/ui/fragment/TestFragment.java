@@ -2,6 +2,7 @@ package cat.xlagunas.drawerapp.ui.fragment;
 
 import android.app.Activity;
 import android.content.Context;
+import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -24,6 +25,7 @@ import cat.xlagunas.drawerapp.R;
 import cat.xlagunas.drawerapp.database.Club;
 import cat.xlagunas.drawerapp.database.DatabaseHelper;
 import cat.xlagunas.drawerapp.database.Favorite;
+import cat.xlagunas.drawerapp.database.util.ClubHelper;
 import cat.xlagunas.drawerapp.ui.activity.Persistable;
 import cat.xlagunas.drawerapp.ui.adapter.SelectionAdapter;
 
@@ -35,28 +37,22 @@ public class TestFragment extends Fragment implements View.OnClickListener{
     private OnFragmentInteractionListener mListener;
 
     private static final String TAG = TestFragment.class.getSimpleName();
-    /**
-     * The fragment argument representing the section number for this
-     * fragment.
-     */
-    private static final String ARG_SECTION_NUMBER = "section_number";
+
     private View mRootView;
     private int mTotalPages;
     private Context mContext;
+    private List<Club> mClubs;
     private List<Favorite> mFavorites;
 
     private DatabaseHelper mHelper;
-
-
 
     /**
      * Returns a new instance of this fragment for the given section
      * number.
      */
-    public static TestFragment newInstance(int sectionNumber) {
+    public static TestFragment newInstance() {
         TestFragment fragment = new TestFragment();
         Bundle args = new Bundle();
-        args.putInt(ARG_SECTION_NUMBER, sectionNumber);
         fragment.setArguments(args);
         return fragment;
     }
@@ -82,9 +78,9 @@ public class TestFragment extends Fragment implements View.OnClickListener{
     public void onResume() {
         super.onResume();
         animateView();
-        getFavoriteList();
-        if (mFavorites != null && mFavorites.size() > 0) {
-            Log.i(TAG, "Favorites found: "+mFavorites.size());
+
+        if (mClubs != null && mClubs.size() > 0) {
+            Log.i(TAG, "Favorites found: "+mClubs.size());
         }
         else {
             mRecyclerView.setAdapter(new SelectionAdapter());
@@ -93,7 +89,7 @@ public class TestFragment extends Fragment implements View.OnClickListener{
 
     }
 
-    private void getFavoriteList(){
+    private void getFavoriteList2(){
         try {
             QueryBuilder<Favorite, Integer> mBuilder = mHelper.getFavoriteDao().queryBuilder();
             QueryBuilder<Club, String> mLeftJoin = mHelper.getClubDao().queryBuilder().leftJoin(mBuilder);
@@ -122,9 +118,11 @@ public class TestFragment extends Fragment implements View.OnClickListener{
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        CustomApplication app = (CustomApplication) getActivity().getApplication();
         Log.d(TAG, "Call onActivityCreated");
-//            initResultCalls();
+        mClubs = ClubHelper.getFavoritedClubs(mHelper);
+
+
+
 
     }
 
