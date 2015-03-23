@@ -31,7 +31,7 @@ public class SelectionActivity extends ActionBarActivity implements OnFragmentIn
         if (savedInstanceState == null) {
             getSupportFragmentManager()
                     .beginTransaction()
-                    .add(R.id.fragment_container, TestFragment.newInstance(3), "Test fragment")
+                    .add(R.id.fragment_container, TestFragment.newInstance(), "Test fragment")
                     .commit();
         }
     }

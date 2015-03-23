@@ -15,7 +15,7 @@ import rx.Observable;
 /**
  * Created by xlagunas on 03/03/15.
  */
-public interface ApiTest {
+public interface RestAPI {
 
     @GET("/resultats/get_resultats_ultima_jornada_jugada/{RegionId}/{categoryId}/{competitionId}/{groupId}")
     public Results getLastWeekResults(@Path("RegionId") String RegionId,

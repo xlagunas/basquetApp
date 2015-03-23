@@ -18,6 +18,7 @@ public class Favorite {
     public final static String FAVORITE_MAX_ROUNDS = "max_rounds";
     public final static String FAVORITE_CURRENT_ROUND = "current_round";
     public final static String FAVORITE_CATEGORY_NAME = "category_name";
+    public final static String FAVORITE_COMPETITION_ID = "competition_id";
     public final static String FAVORITE_REGION_ID = "region_id";
     public final static String FAVORITE_CLUB_ID = "club_id";
 
@@ -47,6 +48,9 @@ public class Favorite {
 
     @DatabaseField(canBeNull = false, columnName = FAVORITE_CATEGORY_NAME)
     private String categoryName;
+
+    @DatabaseField(canBeNull = false, columnName = FAVORITE_COMPETITION_ID)
+    private String competitionId;
 
     @DatabaseField(foreign = true, canBeNull = false)
     private Club club;
@@ -132,5 +136,18 @@ public class Favorite {
 
     public void setClub(Club club) {
         this.club = club;
+    }
+
+    public String getCompetitionId() {
+        return competitionId;
+    }
+
+    public void setCompetitionId(String competitionId) {
+        this.competitionId = competitionId;
+    }
+
+    @Override
+    public String toString() {
+        return getCategoryName();
     }
 }

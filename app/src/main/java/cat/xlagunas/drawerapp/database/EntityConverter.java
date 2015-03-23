@@ -51,6 +51,33 @@ public class EntityConverter {
         favorite.setTeamName(details.getEquip().getNom());
         favorite.setTeamId(details.getEquip().getIdEquip());
         favorite.setRegionId(competition.getTerritorial());
+        favorite.setCompetitionId(competition.getCodiCompeticio());
         return favorite;
+    }
+
+    public static cat.xlagunas.drawerapp.api.model.Favorite parseFavoriteDatabase(Favorite favorite) {
+        cat.xlagunas.drawerapp.api.model.Favorite fav = new cat.xlagunas.drawerapp.api.model.Favorite();
+
+        fav.setTeamId(favorite.getTeamId());
+        fav.setGroupId(favorite.getGroupId());
+        fav.setCategoryName(favorite.getCategoryName());
+        fav.setCategoryId(favorite.getCategoryId());
+        fav.setClubId(favorite.getClub().getIdClub());
+        fav.setCurrentRounds(favorite.getCurrentRound());
+        fav.setMaxRounds(favorite.getMaxRounds());
+        fav.setRegionId(favorite.getRegionId());
+        fav.setCompetitionId(favorite.getCompetitionId());
+
+        return fav;
+    }
+
+    public static List<cat.xlagunas.drawerapp.api.model.Favorite> parseFavoriteListFromDatabase(List<Favorite> favs) {
+        List<cat.xlagunas.drawerapp.api.model.Favorite> favorites = new ArrayList<>(favs.size());
+
+        for (int i=0; i<favs.size(); i++) {
+            favorites.add(parseFavoriteDatabase(favs.get(i)));
+        }
+
+        return favorites;
     }
 }

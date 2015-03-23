@@ -3,7 +3,7 @@ package cat.xlagunas.drawerapp;
 import android.app.Application;
 import android.util.Log;
 
-import cat.xlagunas.drawerapp.api.ApiTest;
+import cat.xlagunas.drawerapp.api.RestAPI;
 import cat.xlagunas.drawerapp.api.BasicAuthInterceptor;
 import retrofit.RestAdapter;
 
@@ -12,7 +12,7 @@ import retrofit.RestAdapter;
  */
 public class CustomApplication extends Application {
 
-    private ApiTest mService;
+    private RestAPI mService;
 
     @Override
     public void onCreate() {
@@ -28,10 +28,10 @@ public class CustomApplication extends Application {
                 .setRequestInterceptor(new BasicAuthInterceptor())
                 .build();
 
-        mService = restAdapter.create(ApiTest.class);
+        mService = restAdapter.create(RestAPI.class);
     }
 
-    public ApiTest getApiService() {
+    public RestAPI getApiService() {
         return mService;
     }
 

@@ -116,7 +116,7 @@ public class TeamSelectionFragment extends BusFragment {
             public void onClick(View v) {
                 ApiService.getCompetition(getActivity(), competicio, teamDetails);
 
-                startActivity(CompetitionActivity.makeIntent(getActivity(), competicio));
+//                startActivity(CompetitionActivity.makeIntent(getActivity(), competicio));
                 getActivity().finish();
             }
         });

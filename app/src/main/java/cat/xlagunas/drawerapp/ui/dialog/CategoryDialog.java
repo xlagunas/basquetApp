@@ -68,24 +68,6 @@ public class CategoryDialog extends DialogFragment {
                 .create();
     }
 
-//    @Override
-//    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-//        View view = inflater.inflate(R.layout.dialog_list, null);
-//        mListView = (ListView) view.findViewById(R.id.dialog_list);
-//        mListView.setVisibility(View.GONE);
-//        mProgressBar = (ProgressBar) view.findViewById(R.id.progress_bar);
-//
-//        return view;
-//    }
-
-//    @Override
-//    public void onResume() {
-//        super.onResume();
-//        CustomApplication app = (CustomApplication) getActivity().getApplication();
-//    }
-
-
-
     @Override
     public void onResume() {
         super.onResume();

@@ -28,7 +28,7 @@ import cat.xlagunas.drawerapp.database.DatabaseHelper;
 import cat.xlagunas.drawerapp.database.EntityConverter;
 import cat.xlagunas.drawerapp.ui.activity.Persistable;
 import cat.xlagunas.drawerapp.ui.adapter.SelectionAdapter;
-import cat.xlagunas.drawerapp.api.ApiTest;
+import cat.xlagunas.drawerapp.api.RestAPI;
 import cat.xlagunas.drawerapp.api.model.BasicEntity;
 import cat.xlagunas.drawerapp.api.model.ClubBasic;
 import cat.xlagunas.drawerapp.api.model.Team;
@@ -47,7 +47,7 @@ public class FavoriteSelectionFragment extends Fragment {
     private static final String ARG_TYPE = "type";
     private static final String ARG_CLUB_ID = "club_id";
     private DatabaseHelper mHelper;
-    private ApiTest apiTest;
+    private RestAPI restAPI;
 
     private int mType;
     private String mTeamId;
@@ -91,7 +91,7 @@ public class FavoriteSelectionFragment extends Fragment {
         }
 
         CustomApplication app = (CustomApplication) getActivity().getApplication();
-        apiTest = app.getApiService();
+        restAPI = app.getApiService();
     }
 
     @Override
@@ -126,7 +126,7 @@ public class FavoriteSelectionFragment extends Fragment {
     }
 
     private void requestTeamsCall() {
-        apiTest
+        restAPI
                 .getTeamsByClubId(mTeamId)
                 .subscribeOn(Schedulers.from(AsyncTask.THREAD_POOL_EXECUTOR))
                 .observeOn(AndroidSchedulers.mainThread())
@@ -163,7 +163,7 @@ public class FavoriteSelectionFragment extends Fragment {
             initClubView();
         } else {
 
-            apiTest
+            restAPI
                     .getClubsList()
                     .subscribeOn(Schedulers.from(AsyncTask.THREAD_POOL_EXECUTOR))
                     .observeOn(AndroidSchedulers.mainThread())

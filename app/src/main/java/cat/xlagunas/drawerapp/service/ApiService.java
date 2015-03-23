@@ -8,13 +8,12 @@ import android.util.Log;
 
 import com.j256.ormlite.android.apptools.OpenHelperManager;
 
-import java.io.Serializable;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
 import cat.xlagunas.drawerapp.CustomApplication;
-import cat.xlagunas.drawerapp.api.ApiTest;
+import cat.xlagunas.drawerapp.api.RestAPI;
 import cat.xlagunas.drawerapp.api.model.Competicion;
 import cat.xlagunas.drawerapp.api.model.Results;
 import cat.xlagunas.drawerapp.api.model.Team;
@@ -37,7 +36,7 @@ public class ApiService extends IntentService {
     private static final String  EXTRA_TEAM_CATEGORY = "teamCategory";
     private static final String  EXTRA_COMPETITION = "competition";
 
-    private ApiTest mApiTest;
+    private RestAPI mRestAPI;
     private DatabaseHelper databaseHelper = null;
 
     private DatabaseHelper getHelper() {
@@ -71,7 +70,7 @@ public class ApiService extends IntentService {
     @Override
     public void onCreate() {
         super.onCreate();
-        mApiTest = ((CustomApplication)getApplication()).getApiService();
+        mRestAPI = ((CustomApplication)getApplication()).getApiService();
     }
 
     @Override
@@ -90,12 +89,12 @@ public class ApiService extends IntentService {
     }
 
     private void parseCompetition(Competicion competition, TeamDetails details) {
-        List<Integer> numRounds = mApiTest.getMaximumRounds(competition.getTerritorial(),
+        List<Integer> numRounds = mRestAPI.getMaximumRounds(competition.getTerritorial(),
                 competition.getCodiCategoria(),competition.getCodiCompeticio(), competition.getNumGrup());
 
         if (numRounds != null && numRounds.size() > 0) {
             Log.d(TAG, "Total rounds on the competition: " + numRounds.get(0));
-            Results results = mApiTest.getLastWeekResults(competition.getTerritorial(),
+            Results results = mRestAPI.getLastWeekResults(competition.getTerritorial(),
                     competition.getCodiCategoria(),competition.getCodiCompeticio(), competition.getNumGrup());
 
             Log.d(TAG, "Category Results: " + results.toString());
@@ -140,7 +139,7 @@ public class ApiService extends IntentService {
         List<TeamDetails> teamDetails = new ArrayList<>(teamCategory.getTeams().size());
         requestTime = System.currentTimeMillis();
         for (Team team : teamCategory.getTeams()){
-            teamDetails.add(mApiTest.getTeamDetails(team.getCodiClub(), team.getCodiEquip()));
+            teamDetails.add(mRestAPI.getTeamDetails(team.getCodiClub(), team.getCodiEquip()));
             Log.d(TAG, "Request took: " + (System.currentTimeMillis() - requestTime));
         }
 

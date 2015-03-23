@@ -2,6 +2,7 @@ package cat.xlagunas.drawerapp.ui.fragment;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Entity;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
@@ -13,21 +14,29 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.TranslateAnimation;
+import android.widget.Toast;
 
 import com.j256.ormlite.stmt.QueryBuilder;
 import com.melnykov.fab.FloatingActionButton;
 
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
 import cat.xlagunas.drawerapp.CustomApplication;
 import cat.xlagunas.drawerapp.R;
+import cat.xlagunas.drawerapp.api.model.BasicEntity;
+import cat.xlagunas.drawerapp.api.model.ClubBasic;
 import cat.xlagunas.drawerapp.database.Club;
 import cat.xlagunas.drawerapp.database.DatabaseHelper;
+import cat.xlagunas.drawerapp.database.EntityConverter;
 import cat.xlagunas.drawerapp.database.Favorite;
 import cat.xlagunas.drawerapp.database.util.ClubHelper;
+import cat.xlagunas.drawerapp.ui.activity.CompetitionActivity;
 import cat.xlagunas.drawerapp.ui.activity.Persistable;
 import cat.xlagunas.drawerapp.ui.adapter.SelectionAdapter;
+import cat.xlagunas.drawerapp.ui.dialog.CategoryDialog;
+import cat.xlagunas.drawerapp.ui.dialog.GenericListDialog;
 
 public class TestFragment extends Fragment implements View.OnClickListener{
 
@@ -81,11 +90,35 @@ public class TestFragment extends Fragment implements View.OnClickListener{
 
         if (mClubs != null && mClubs.size() > 0) {
             Log.i(TAG, "Favorites found: "+mClubs.size());
+            List<? extends BasicEntity> clubList = (List<? extends BasicEntity>)EntityConverter.convertFromClubListToClubBasicList(mClubs);
+            mRecyclerView.setAdapter(new SelectionAdapter((List<BasicEntity>)clubList, new SelectionAdapter.SelectionCallback() {
+                @Override
+                public void onItemSelected(BasicEntity basicClub) {
+                    Club c = EntityConverter.convertFromClubBasicToClub((ClubBasic) basicClub);
+                    GenericListDialog<cat.xlagunas.drawerapp.api.model.Favorite> dialog = GenericListDialog.init("Selecciona categoria");
+                    for (Club club: mClubs){
+                        if (club.getIdClub() == c.getIdClub())
+                            dialog.setContent(EntityConverter.parseFavoriteListFromDatabase(new ArrayList<>(club.getFavorites())));
+                    }
+                    dialog.OnElementClickedListener(new GenericListDialog.OnElementClickedListener() {
+                        @Override
+                        public void OnElementClicked(Object element) {
+                            //TODO MOURE AL CALLBACK DE LA ACTIVITY
+                            cat.xlagunas.drawerapp.api.model.Favorite favorite = (cat.xlagunas.drawerapp.api.model.Favorite) element;
+                            startActivity(CompetitionActivity.makeIntent(getActivity(), favorite));
+                            getActivity().finish();
+                        }
+                    });
+
+                    dialog.show(getFragmentManager(), "Category dialog");
+                }
+            }));
         }
         else {
             mRecyclerView.setAdapter(new SelectionAdapter());
-            mRecyclerView.getAdapter().notifyDataSetChanged();
         }
+
+        mRecyclerView.getAdapter().notifyDataSetChanged();
 
     }
 

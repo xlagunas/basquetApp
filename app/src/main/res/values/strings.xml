@@ -20,4 +20,5 @@
     <string name="action_search">Busca el club</string>
     <string name="title_activity_main_activity2">MainActivity2Activity</string>
     <string name="title_activity_competition">CompetitionActivity</string>
+    <string name="competition_label">%1$s, Jornada %2$d</string>
 </resources>
