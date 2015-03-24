@@ -33,6 +33,7 @@ public class CompetitionActivity extends ActionBarActivity implements ViewPager.
         mViewPager.setAdapter(mPagerAdapter);
         mViewPager.setCurrentItem(mFavorite.getCurrentRounds());
         mViewPager.setOnPageChangeListener(this);
+        onPageSelected(mFavorite.getCurrentRounds());
 
     }
 

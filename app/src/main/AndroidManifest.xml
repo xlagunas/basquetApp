@@ -10,22 +10,36 @@
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:theme="@style/AppTheme" >
-        <activity
-            android:name=".ui.activity.MainActivity"
-            android:label="@string/app_name" >
-        </activity>
+
         <activity
             android:name=".ui.activity.SelectionActivity"
             android:label="@string/app_name" >
+            <!--<intent-filter>-->
+                <!--<action android:name="android.intent.action.MAIN" />-->
+
+                <!--<category android:name="android.intent.category.LAUNCHER" />-->
+            <!--</intent-filter>-->
+        </activity>
+
+        <activity
+            android:name=".ui.activity.FavoriteSelectionActivity"
+            android:label="@string/title_activity_favorite_selection" >
+        </activity>
+
+        <activity
+            android:name=".ui.activity.LeagueActivity"
+            android:label="@string/title_activity_league" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+
         <activity
-            android:name=".ui.activity.FavoriteSelectionActivity"
-            android:label="@string/title_activity_favorite_selection" >
+            android:name=".ui.activity.CompetitionActivity"
+            android:label="@string/title_activity_competition" >
         </activity>
 
         <service
@@ -33,10 +47,16 @@
             android:exported="false" >
         </service>
 
-        <activity
-            android:name=".ui.activity.CompetitionActivity"
-            android:label="@string/title_activity_competition" >
-        </activity>
+        <service
+            android:name=".service.UpdateService"
+            android:exported="false" >
+        </service>
+
+        <receiver
+            android:name=".service.AlarmReceiver"
+            android:enabled="true"
+            android:exported="false" >
+        </receiver>
     </application>
 
 </manifest>

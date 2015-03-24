@@ -99,7 +99,6 @@ public class ApiService extends IntentService {
 
             Log.d(TAG, "Category Results: " + results.toString());
 
-            //TODO: Save in database the current week, name of the team and lastResults
             Favorite favorite = EntityConverter.convertFavoriteFromModels(competition, details);
             favorite.setMaxRounds(numRounds.get(0));
             favorite.setCurrentRound(Integer.parseInt(results.getJornada()));
