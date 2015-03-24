@@ -1,7 +1,8 @@
 package cat.xlagunas.drawerapp.ui.fragment;
 
 
-import android.support.v4.app.Fragment;
+
+import android.app.Fragment;
 
 import de.greenrobot.event.EventBus;
 

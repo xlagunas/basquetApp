@@ -121,6 +121,7 @@
     <orderEntry type="library" exported="" name="recyclerview-v7-21.0.3" level="project" />
     <orderEntry type="library" exported="" name="okhttp-2.2.0" level="project" />
     <orderEntry type="library" exported="" name="support-annotations-21.0.3" level="project" />
+    <orderEntry type="library" exported="" name="support-v13-18.0.0" level="project" />
     <orderEntry type="library" exported="" name="okio-1.2.0" level="project" />
   </component>
 </module>

@@ -1,12 +1,10 @@
 package cat.xlagunas.drawerapp.ui.fragment;
 
 import android.app.Activity;
+import android.app.Fragment;
 import android.content.Context;
-import android.content.Entity;
-import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -14,7 +12,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.TranslateAnimation;
-import android.widget.Toast;
 
 import com.j256.ormlite.stmt.QueryBuilder;
 import com.melnykov.fab.FloatingActionButton;
@@ -23,7 +20,6 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-import cat.xlagunas.drawerapp.CustomApplication;
 import cat.xlagunas.drawerapp.R;
 import cat.xlagunas.drawerapp.api.model.BasicEntity;
 import cat.xlagunas.drawerapp.api.model.ClubBasic;
@@ -35,7 +31,6 @@ import cat.xlagunas.drawerapp.database.util.ClubHelper;
 import cat.xlagunas.drawerapp.ui.activity.CompetitionActivity;
 import cat.xlagunas.drawerapp.ui.activity.Persistable;
 import cat.xlagunas.drawerapp.ui.adapter.SelectionAdapter;
-import cat.xlagunas.drawerapp.ui.dialog.CategoryDialog;
 import cat.xlagunas.drawerapp.ui.dialog.GenericListDialog;
 
 public class TestFragment extends Fragment implements View.OnClickListener{
