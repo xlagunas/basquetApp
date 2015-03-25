@@ -9,7 +9,6 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-import android.widget.Toast;
 
 
 import cat.xlagunas.drawerapp.R;
@@ -17,7 +16,6 @@ import cat.xlagunas.drawerapp.api.model.Competicion;
 import cat.xlagunas.drawerapp.api.model.TeamCategory;
 import cat.xlagunas.drawerapp.api.model.TeamDetails;
 import cat.xlagunas.drawerapp.service.ApiService;
-import cat.xlagunas.drawerapp.ui.activity.CompetitionActivity;
 import cat.xlagunas.drawerapp.util.event.TeamDetailsEvent;
 
 public class TeamSelectionFragment extends BusFragment {

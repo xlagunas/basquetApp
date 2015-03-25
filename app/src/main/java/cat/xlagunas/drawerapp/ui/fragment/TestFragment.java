@@ -28,7 +28,7 @@ import cat.xlagunas.drawerapp.database.DatabaseHelper;
 import cat.xlagunas.drawerapp.database.EntityConverter;
 import cat.xlagunas.drawerapp.database.Favorite;
 import cat.xlagunas.drawerapp.database.util.ClubHelper;
-import cat.xlagunas.drawerapp.ui.activity.CompetitionActivity;
+import cat.xlagunas.drawerapp.ui.activity.LeagueActivity;
 import cat.xlagunas.drawerapp.ui.activity.Persistable;
 import cat.xlagunas.drawerapp.ui.adapter.SelectionAdapter;
 import cat.xlagunas.drawerapp.ui.dialog.GenericListDialog;
@@ -100,7 +100,8 @@ public class TestFragment extends Fragment implements View.OnClickListener{
                         public void OnElementClicked(Object element) {
                             //TODO MOURE AL CALLBACK DE LA ACTIVITY
                             cat.xlagunas.drawerapp.api.model.Favorite favorite = (cat.xlagunas.drawerapp.api.model.Favorite) element;
-                            startActivity(CompetitionActivity.makeIntent(getActivity(), favorite));
+//                            startActivity(CompetitionActivity.makeIntent(getActivity(), favorite));
+                            startActivity(LeagueActivity.makeIntent(getActivity(), favorite));
                             getActivity().finish();
                         }
                     });

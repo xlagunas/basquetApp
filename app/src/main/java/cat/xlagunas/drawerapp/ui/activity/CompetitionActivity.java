@@ -28,7 +28,7 @@ public class CompetitionActivity extends ActionBarActivity implements ViewPager.
         mFavorite = getIntent().getParcelableExtra(EXTRA_FAVORITE);
         mViewPager = (ViewPager) findViewById(R.id.view_pager);
         mTitle = (TextView) findViewById(R.id.activity_title);
-        mPagerAdapter = new ResultViewPagerAdapter(getSupportFragmentManager(), mFavorite);
+        mPagerAdapter = new ResultViewPagerAdapter(getFragmentManager(), mFavorite);
 
         mViewPager.setAdapter(mPagerAdapter);
         mViewPager.setCurrentItem(mFavorite.getCurrentRounds());

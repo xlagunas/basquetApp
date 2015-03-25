@@ -1,8 +1,8 @@
 package cat.xlagunas.drawerapp.ui.activity;
 
+import android.app.Fragment;
 import android.content.Intent;
 import android.net.Uri;
-import android.support.v4.app.Fragment;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.Toolbar;
@@ -29,7 +29,7 @@ public class SelectionActivity extends ActionBarActivity implements OnFragmentIn
         setSupportActionBar(toolbar);
 
         if (savedInstanceState == null) {
-            getSupportFragmentManager()
+            getFragmentManager()
                     .beginTransaction()
                     .add(R.id.fragment_container, TestFragment.newInstance(), "Test fragment")
                     .commit();
@@ -39,7 +39,7 @@ public class SelectionActivity extends ActionBarActivity implements OnFragmentIn
     @Override
     public void onWindowFocusChanged(boolean hasFocus) {
         if (hasFocus){
-            Fragment f = getSupportFragmentManager().findFragmentByTag("Test fragment");
+            Fragment f = getFragmentManager().findFragmentByTag("Test fragment");
             if (f != null && f instanceof TestFragment){
                 ((TestFragment) f).animateView();
             }

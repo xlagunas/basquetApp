@@ -7,6 +7,7 @@ import cat.xlagunas.drawerapp.api.model.Resultat;
 import cat.xlagunas.drawerapp.api.model.Results;
 import cat.xlagunas.drawerapp.api.model.Team;
 import cat.xlagunas.drawerapp.api.model.TeamDetails;
+import cat.xlagunas.drawerapp.api.model.TeamStatistic;
 import retrofit.Callback;
 import retrofit.http.GET;
 import retrofit.http.Path;
@@ -35,6 +36,13 @@ public interface RestAPI {
                                     @Path("categoryId") String categoryId,
                                     @Path("competitionId") String competitionId,
                                     @Path("groupId") String groupId);
+
+    @GET("/classificacions/get_classificacions_per_competicio/{RegionId}/{categoryId}/{competitionId}/{groupId}/{weekId}")
+    public void getClassifications(@Path("RegionId") String RegionId,
+                                    @Path("categoryId") String categoryId,
+                                    @Path("competitionId") String competitionId,
+                                    @Path("groupId") String groupId,
+                                    @Path("weekId") int weekId, Callback<List<TeamStatistic>> callback);
 
     @GET("/clubs/buscador_per_lletra")
     public Observable<List<ClubBasic>> getClubsList();

@@ -1,7 +1,7 @@
 package cat.xlagunas.drawerapp.ui.activity;
 
+import android.app.Fragment;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
@@ -31,13 +31,13 @@ public class FavoriteSelectionActivity extends ActionBarActivity implements Pers
         Toolbar toolbar = (Toolbar)findViewById(R.id.my_awesome_toolbar);
         setSupportActionBar(toolbar);
 
-        if (getSupportFragmentManager().findFragmentByTag(FavoriteSelectionFragment.TAG) == null) {
+        if (getFragmentManager().findFragmentByTag(FavoriteSelectionFragment.TAG) == null) {
             changeFragment(FavoriteSelectionFragment.findClubs());
         }
     }
 
     private void changeFragment(Fragment fragment){
-        getSupportFragmentManager()
+        getFragmentManager()
                 .beginTransaction()
                 .replace(R.id.fragment_container, fragment, fragment.getClass().getSimpleName())
                 .addToBackStack(FavoriteSelectionFragment.TAG)
@@ -77,7 +77,7 @@ public class FavoriteSelectionActivity extends ActionBarActivity implements Pers
             }
         });
 
-        dialog.show(getSupportFragmentManager(), "Dialog");
+        dialog.show(getFragmentManager(), "Dialog");
     }
 
     public DatabaseHelper getHelper() {

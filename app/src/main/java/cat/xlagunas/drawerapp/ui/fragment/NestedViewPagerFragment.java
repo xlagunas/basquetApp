@@ -51,11 +51,13 @@ public class NestedViewPagerFragment extends Fragment implements ViewPager.OnPag
         // Inflate the layout for this fragment
         View v =  inflater.inflate(R.layout.fragment_nested_view_pager, container, false);
         mViewPager = (ViewPager) v.findViewById(R.id.nested_view_pager);
-        mViewPager.setAdapter(mPagerAdapter);
         mViewPager.setCurrentItem(mFavorite.getCurrentRounds());
         mViewPager.setOnPageChangeListener(this);
+
         mPagerAdapter = new ResultViewPagerAdapter(getChildFragmentManager(), mFavorite);
         onPageSelected(mFavorite.getCurrentRounds());
+
+        mViewPager.setAdapter(mPagerAdapter);
 
         return v;
     }

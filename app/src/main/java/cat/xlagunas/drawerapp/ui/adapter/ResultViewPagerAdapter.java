@@ -1,8 +1,9 @@
 package cat.xlagunas.drawerapp.ui.adapter;
 
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentPagerAdapter;
+
+import android.app.Fragment;
+import android.app.FragmentManager;
+import android.support.v13.app.FragmentPagerAdapter;
 
 import cat.xlagunas.drawerapp.api.model.Favorite;
 import cat.xlagunas.drawerapp.ui.fragment.ResultsFragment;
