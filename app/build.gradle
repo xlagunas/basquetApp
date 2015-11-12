@@ -5,7 +5,7 @@ android {
     buildToolsVersion "21.1.2"
 
     defaultConfig {
-        applicationId "cat.xlagunas.drawerapp"
+        applicationId "cat.xlagunas.basquetapp"
         minSdkVersion 21
         targetSdkVersion 21
         versionCode 1
@@ -20,12 +20,12 @@ android {
 
     productFlavors {
         premium {
-            applicationId "cat.xlagunas.drawerapp.premium"
+            applicationId "cat.xlagunas.basquetapp.premium"
             versionName "1.0-premium"
         }
 
         freemium {
-            applicationId "cat.xlagunas.drawerapp.freemium"
+            applicationId "cat.xlagunas.basquetapp.freemium"
             versionName "1.0-freemium"
         }
     }
