@@ -5,6 +5,7 @@ import android.app.Fragment;
 import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -14,7 +15,6 @@ import android.view.ViewGroup;
 import android.view.animation.TranslateAnimation;
 
 import com.j256.ormlite.stmt.QueryBuilder;
-import com.melnykov.fab.FloatingActionButton;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -73,7 +73,6 @@ public class TestFragment extends Fragment implements View.OnClickListener{
         mRecyclerView.setLayoutManager(mLinearLayoutManager);
         mRootView.findViewById(R.id.fab).setOnClickListener(this);
         mActionButton = (FloatingActionButton) mRootView.findViewById(R.id.fab);
-        mActionButton.attachToRecyclerView(mRecyclerView);
 
         return mRootView;
     }
