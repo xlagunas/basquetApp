@@ -1,22 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:fab="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    >
 
     <android.support.v7.widget.RecyclerView
         android:id="@android:id/list"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 
-    <com.melnykov.fab.FloatingActionButton
+    <android.support.design.widget.FloatingActionButton
         android:id="@+id/fab"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|right"
-        android:layout_margin="16dp"
-        android:src="@drawable/ic_add_white_24dp"
-        fab:fab_colorNormal="@color/my_awesome_color"
-        fab:fab_colorPressed="@color/my_awesome_darker_color"
+        android:layout_marginBottom="16dp"
+        android:layout_marginRight="16dp"
+        android:src="@android:drawable/ic_input_add"
+        android:tint="#ffff"
         />
+
 </FrameLayout>

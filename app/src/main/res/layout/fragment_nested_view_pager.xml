@@ -1,7 +1,7 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="cat.xlagunas.drawerapp.ui.fragment.NestedViewPagerFragment">
+    tools:context="cat.xlagunas.basquetapp.ui.fragment.NestedViewPagerFragment">
 
     <android.support.v4.view.ViewPager
         android:id="@+id/nested_view_pager"

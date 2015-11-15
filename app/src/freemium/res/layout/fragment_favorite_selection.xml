@@ -10,12 +10,12 @@
         android:layout_height="0dp"
         android:layout_weight="1">
 
-        <cat.xlagunas.drawerapp.ui.component.CustomRecyclerView
+        <cat.xlagunas.basquetapp.ui.component.CustomRecyclerView
             android:id="@android:id/list"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
-        </cat.xlagunas.drawerapp.ui.component.CustomRecyclerView>
+        </cat.xlagunas.basquetapp.ui.component.CustomRecyclerView>
 
         <ProgressBar
             android:id="@+id/progress_bar"

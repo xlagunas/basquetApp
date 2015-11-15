@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="60dp"
+    android:orientation="horizontal"
+    android:paddingTop="16dp"
+    android:paddingBottom="16dp">
+
+    <TextView
+        android:id="@id/team_name"
+        android:layout_height="match_parent"
+        android:layout_width="match_parent"
+        android:layout_toStartOf="@+id/team_wins"
+        tools:text="EQUIP"
+        android:singleLine="true"
+        android:ellipsize="end"
+        android:paddingLeft="20dp"
+        android:paddingRight="20dp"
+        android:gravity="left|center_vertical"
+        />
+
+    <TextView
+        android:id="@id/team_wins"
+        android:layout_width="20dp"
+        android:layout_height="match_parent"
+        android:layout_centerInParent="true"
+        android:layout_toLeftOf="@+id/team_losses"
+        android:layout_marginRight="20dp"
+        tools:text="V"
+        android:gravity="center"
+        />
+
+    <TextView
+        android:id="@+id/team_losses"
+        android:layout_width="20dp"
+        android:layout_height="match_parent"
+        android:layout_toLeftOf="@+id/team_percent"
+        android:layout_marginRight="20dp"
+        tools:text="D"
+        android:gravity="center"
+        />
+
+    <TextView
+        android:id="@id/team_percent"
+        android:layout_width="30dp"
+        android:layout_height="match_parent"
+        android:layout_toLeftOf="@+id/team_rank"
+        android:layout_marginRight="20dp"
+        tools:text="%"
+        android:gravity="center"
+        />
+
+    <TextView
+        android:id="@id/team_rank"
+        android:layout_width="20dp"
+        android:layout_height="match_parent"
+        android:layout_alignParentEnd="true"
+        android:layout_marginRight="20dp"
+        tools:text="#"
+        android:gravity="center"
+        />
+</RelativeLayout>

@@ -1,4 +1,4 @@
-package cat.xlagunas.drawerapp;
+package cat.xlagunas.basquetapp;
 
 import java.util.List;
 

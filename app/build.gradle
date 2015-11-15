@@ -1,15 +1,15 @@
 apply plugin: 'com.android.application'
 
 android {
-    compileSdkVersion 21
-    buildToolsVersion "21.1.2"
+    compileSdkVersion 23
+    buildToolsVersion "23.0.1"
 
     defaultConfig {
-        applicationId "cat.xlagunas.drawerapp"
-        minSdkVersion 21
-        targetSdkVersion 21
-        versionCode 1
-        versionName "1.0"
+        applicationId "cat.xlagunas.basquetapp"
+        minSdkVersion 16
+        targetSdkVersion 23
+        versionCode 0
+        versionName "0.1"
     }
     buildTypes {
         release {
@@ -20,12 +20,12 @@ android {
 
     productFlavors {
         premium {
-            applicationId "cat.xlagunas.drawerapp.premium"
+            applicationId "cat.xlagunas.basquetapp.premium"
             versionName "1.0-premium"
         }
 
         freemium {
-            applicationId "cat.xlagunas.drawerapp.freemium"
+            applicationId "cat.xlagunas.basquetapp.freemium"
             versionName "1.0-freemium"
         }
     }
@@ -41,12 +41,11 @@ dependencies {
 
     compile 'com.google.code.gson:gson:1.7.2'
 
-    compile 'com.android.support:support-v4:21.0.3'
-    compile 'com.android.support:cardview-v7:+'
-    compile 'com.android.support:recyclerview-v7:+'
-    compile 'com.android.support:appcompat-v7:21.0.+'
+    compile 'com.android.support:cardview-v7:23.1.0'
+    compile 'com.android.support:recyclerview-v7:23.1.0'
+    compile 'com.android.support:design:23.1.0'
+    compile 'com.android.support:support-v13:23.1.0'
 
-    compile 'com.melnykov:floatingactionbutton:1.2.0'
 
     compile 'de.greenrobot:eventbus:2.4.0'
     compile 'com.j256.ormlite:ormlite-android:4.45'
